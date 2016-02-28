@@ -24,7 +24,7 @@
  * @copyright 2016 @authors
  * @license   http://www.gnu.org/copyleft/lesser.html The GNU LESSER GENERAL PUBLIC LICENSE, Version 3.0
  */
-namespace Metaclassing;
+namespace metaclassing;
 
 class Utility
 {
