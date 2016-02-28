@@ -1,0 +1,29 @@
+{
+    "name": "metaclassing/utility",
+    "type": "library",
+    "description": "PHP Utility Library",
+    "keywords": [
+        "php5",
+        "utility"
+        ],
+    "homepage": "http://github.com/metaclassing/utility",
+    "license": "LGPL3.0",
+    "authors": [
+        {
+            "name": "John.Lavoie",
+            "email": "composer@secureobscure.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Metaclassing\\": "lib"
+        }
+    }
+}
