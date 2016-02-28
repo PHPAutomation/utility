@@ -44,42 +44,43 @@ class Utility
         return json_last_error() === JSON_ERROR_NONE;
     }
 
-/*
-	decode json into an array and throw exceptions if there is a problem
-*/
-function decodeJson($string)
-{
-    // decode json into an array
-    $result = json_decode($string, true);
+	/*
+		decode json into an array and throw exceptions if there is a problem
+	*/
+	public static function decodeJson($string)
+	{
+	    // decode json into an array
+	    $result = json_decode($string, true);
 
-    // handle possible json errors and throw exceptions
-    switch (json_last_error()) {
-        case JSON_ERROR_NONE:
-            break;
-        case JSON_ERROR_DEPTH:
-            throw new \Exception('The maximum stack depth has been exceeded');
-        case JSON_ERROR_STATE_MISMATCH:
-            throw new \Exception('Invalid or malformed JSON');
-        case JSON_ERROR_CTRL_CHAR:
-            throw new \Exception('Control character error, possibly incorrectly encoded');
-        case JSON_ERROR_SYNTAX:
-            throw new \Exception('Syntax error, malformed JSON');
-        // PHP >= 5.3.3
-        case JSON_ERROR_UTF8:
-            throw new \Exception('Malformed UTF-8 characters, possibly incorrectly encoded');
-        // PHP >= 5.5.0
-        case JSON_ERROR_RECURSION:
-            throw new \Exception('One or more recursive references in the value to be encoded');
-        // PHP >= 5.5.0
-        case JSON_ERROR_INF_OR_NAN:
-            throw new \Exception('One or more NAN or INF values in the value to be encoded');
+	    // handle possible json errors and throw exceptions
+	    switch (json_last_error()) {
+	        case JSON_ERROR_NONE:
+	            break;
+   	     case JSON_ERROR_DEPTH:
+   	         throw new \Exception('The maximum stack depth has been exceeded');
+   	     case JSON_ERROR_STATE_MISMATCH:
+   	         throw new \Exception('Invalid or malformed JSON');
+   	     case JSON_ERROR_CTRL_CHAR:
+   	         throw new \Exception('Control character error, possibly incorrectly encoded');
+   	     case JSON_ERROR_SYNTAX:
+   	         throw new \Exception('Syntax error, malformed JSON');
+   	     // PHP >= 5.3.3
+    	    case JSON_ERROR_UTF8:
+  	          throw new \Exception('Malformed UTF-8 characters, possibly incorrectly encoded');
+      	  // PHP >= 5.5.0
+       	 case JSON_ERROR_RECURSION:
+       	     throw new \Exception('One or more recursive references in the value to be encoded');
+       	 // PHP >= 5.5.0
+       	 case JSON_ERROR_INF_OR_NAN:
+       	     throw new \Exception('One or more NAN or INF values in the value to be encoded');
         case JSON_ERROR_UNSUPPORTED_TYPE:
-            throw new \Exception('A value of a type that cannot be encoded was given');
-        default:
-            throw new \Exception('Unknown JSON error occured');
-    }
-    return $result;
-}
+      		      throw new \Exception('A value of a type that cannot be encoded was given');
+        	default:
+        	    throw new \Exception('Unknown JSON error occured');
+    	}
+    	return $result;
+	}
+
 	/*
 		quick and dirty function to create folders if they dont exist and set permissions
 	*/
@@ -122,7 +123,7 @@ function decodeJson($string)
 		return $result;
 	}
 
-	function dBugToString($debug)
+	public static function dBugToString($debug)
 	{
 	    ob_start();
 	    new dBug($debug);
@@ -271,29 +272,29 @@ function decodeJson($string)
         return $OBJ;
     }
 
-function is_assoc($var)
-{
-        return is_array($var) && array_diff_key($var,array_keys(array_keys($var)));
-}
+	public static function is_assoc($var)
+	{
+	        return is_array($var) && array_diff_key($var,array_keys(array_keys($var)));
+	}
 
-function john_flush ()
-{
-    if (php_sapi_name() != "cli") // DONT FLUSH THE FUCKING CLI!
-    {
-//      echo(str_repeat(' ',256));
-        if (ob_get_length())
-        {
-            @ob_flush();
-            @flush();
-            @ob_end_flush();
-        }
-        @ob_start();
-    }
-}
+	public static function flush()
+	{
+	    if (php_sapi_name() != "cli") // DONT FLUSH THE FUCKING CLI!
+	    {
+	//      echo(str_repeat(' ',256));
+	        if (ob_get_length())
+	        {
+	            @ob_flush();
+	            @flush();
+   	         @ob_end_flush();
+   	     }
+   	     @ob_start();
+   	 }
+	}
 
 
-function parse_nested_list_to_array($LIST, $INDENTATION = " ")
-{
+	function parseNestedListToArray($LIST, $INDENTATION = " ")
+	{
     $RESULT = array();
     $PATH = array();
 
@@ -324,12 +325,11 @@ function parse_nested_list_to_array($LIST, $INDENTATION = " ")
         }
     }
     $RESULT = recursive_remove_empty_array($RESULT);
-//  ksort($RESULT); // Sort our keys in the array for comparison ease // Do we really need this?
     return $RESULT;
-}
+	}
 
-function recursive_remove_empty_array($ARRAY)
-{
+	public static function recursiveRemove_empty_array($ARRAY)
+	{
     $RETURN = array();
     foreach($ARRAY as $KEY => $VALUE)
     {
@@ -341,20 +341,20 @@ function recursive_remove_empty_array($ARRAY)
         }
     }
     return $RETURN;
-}
+	}
 
-// Find if a character $NEEDLE is in a string $HAYSTACK defaulting to case sensitive!
-function inString($needle, $haystack, $insensitive = false) {
-    if ($insensitive) {
-        return false !== stristr($haystack, $needle);
-    } else {
-        return false !== strpos($haystack, $needle);
-    }
-}
+	// Find if a character $NEEDLE is in a string $HAYSTACK defaulting to case sensitive!
+	public static function inString($needle, $haystack, $insensitive = false) {
+	    if ($insensitive) {
+	        return false !== stristr($haystack, $needle);
+	    } else {
+		        return false !== strpos($haystack, $needle);
+	    }
+	}
 
-function pregGrepKeys($pattern, $input, $flags = 0)
-{
-    return array_intersect_key($input, array_flip(preg_grep($pattern, array_keys($input), $flags)));
-}
+	public static function pregGrepKeys($pattern, $input, $flags = 0)
+	{
+   		return array_intersect_key($input, array_flip(preg_grep($pattern, array_keys($input), $flags)));
+	}
 
 }
