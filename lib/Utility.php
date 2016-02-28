@@ -99,6 +99,11 @@ function decodeJson($string)
         return false;
     }
 
+	public static function getDirectoryFiles($directory)
+	{
+		return array_filter( scandir($directory), function($item) { return !is_dir('../pages/' . $item); } );
+	}
+
 	/********************
 	* Ryan's Var Dumper *
 	********************/
@@ -115,6 +120,14 @@ function decodeJson($string)
 		\metaclassing\Utility::dumper($var);
 		$result = ob_get_clean();
 		return $result;
+	}
+
+	function dBugToString($debug)
+	{
+	    ob_start();
+	    new dBug($debug);
+	    $result = ob_get_clean();
+	    return $result;
 	}
 
 	public static function lastStackCall($e)
@@ -257,5 +270,91 @@ function decodeJson($string)
         }
         return $OBJ;
     }
+
+function is_assoc($var)
+{
+        return is_array($var) && array_diff_key($var,array_keys(array_keys($var)));
+}
+
+function john_flush ()
+{
+    if (php_sapi_name() != "cli") // DONT FLUSH THE FUCKING CLI!
+    {
+//      echo(str_repeat(' ',256));
+        if (ob_get_length())
+        {
+            @ob_flush();
+            @flush();
+            @ob_end_flush();
+        }
+        @ob_start();
+    }
+}
+
+
+function parse_nested_list_to_array($LIST, $INDENTATION = " ")
+{
+    $RESULT = array();
+    $PATH = array();
+
+    $LINES = explode("\n",$LIST);
+
+    foreach ($LINES as $LINE)
+    {
+        if ($LINE == "") { continue; print "Skipped blank line\n"; } // Skip blank lines, they dont need to be in our structure
+        $DEPTH  = strlen($LINE) - strlen(ltrim($LINE));
+        $LINE   = trim($LINE);
+        // truncate path if needed
+        while ($DEPTH < sizeof($PATH))
+        {
+            array_pop($PATH);
+        }
+        // keep label (at depth)
+        $PATH[$DEPTH] = $LINE;
+        // traverse path and add label to result
+        $PARENT =& $RESULT;
+        foreach ($PATH as $DEPTH => $KEY)
+        {
+            if (!isset($PARENT[$KEY]))
+            {
+                $PARENT[$LINE] = array();
+                break;
+            }
+            $PARENT =& $PARENT[$KEY];
+        }
+    }
+    $RESULT = recursive_remove_empty_array($RESULT);
+//  ksort($RESULT); // Sort our keys in the array for comparison ease // Do we really need this?
+    return $RESULT;
+}
+
+function recursive_remove_empty_array($ARRAY)
+{
+    $RETURN = array();
+    foreach($ARRAY as $KEY => $VALUE)
+    {
+        if (count($VALUE) == 0)
+        {
+            $RETURN[$KEY] = 1;
+        }else{
+            $RETURN[$KEY] = recursive_remove_empty_array($VALUE);
+        }
+    }
+    return $RETURN;
+}
+
+// Find if a character $NEEDLE is in a string $HAYSTACK defaulting to case sensitive!
+function inString($needle, $haystack, $insensitive = false) {
+    if ($insensitive) {
+        return false !== stristr($haystack, $needle);
+    } else {
+        return false !== strpos($haystack, $needle);
+    }
+}
+
+function pregGrepKeys($pattern, $input, $flags = 0)
+{
+    return array_intersect_key($input, array_flip(preg_grep($pattern, array_keys($input), $flags)));
+}
 
 }
