@@ -24,20 +24,19 @@
  * @copyright 2016 @authors
  * @license   http://www.gnu.org/copyleft/lesser.html The GNU LESSER GENERAL PUBLIC LICENSE, Version 3.0
  */
-
 namespace Metaclassing;
 
-class Callmanager
+class Utility
 {
-	public function __construct()
-	{
-		throw new \Exception("Do not create instances of this object, call public static member functions like \Metaclassing\Utility::someDumbThing(params)");
-	}
+    public function __construct()
+    {
+        throw new \Exception("Do not create instances of this object, call public static member functions like \Metaclassing\Utility::someDumbThing(params)");
+    }
 
-	public function isJson($string)
-	{
-		json_decode($string);
-		return (json_last_error() === JSON_ERROR_NONE);
-	}
+    public function isJson($string)
+    {
+        json_decode($string);
 
+        return json_last_error() === JSON_ERROR_NONE;
+    }
 }
