@@ -73,8 +73,8 @@ class Utility
             // PHP >= 5.5.0
             case JSON_ERROR_INF_OR_NAN:
                 throw new \Exception('One or more NAN or INF values in the value to be encoded');
-        case JSON_ERROR_UNSUPPORTED_TYPE:
-                    throw new \Exception('A value of a type that cannot be encoded was given');
+            case JSON_ERROR_UNSUPPORTED_TYPE:
+                throw new \Exception('A value of a type that cannot be encoded was given');
             default:
                 throw new \Exception('Unknown JSON error occured');
         }
@@ -130,7 +130,7 @@ class Utility
     public static function dBugToString($debug)
     {
         ob_start();
-        new dBug($debug);
+        new \dBug($debug);
         $result = ob_get_clean();
 
         return $result;
@@ -323,19 +323,19 @@ class Utility
                 $PARENT = &$PARENT[$KEY];
             }
         }
-        $RESULT = recursive_remove_empty_array($RESULT);
+        $RESULT = recursiveRemoveEmptyArray($RESULT);
 
         return $RESULT;
     }
 
-    public static function recursiveRemove_empty_array($ARRAY)
+    public static function recursiveRemoveEmptyArray($ARRAY)
     {
         $RETURN = [];
         foreach ($ARRAY as $KEY => $VALUE) {
             if (count($VALUE) == 0) {
                 $RETURN[$KEY] = 1;
             } else {
-                $RETURN[$KEY] = recursive_remove_empty_array($VALUE);
+                $RETURN[$KEY] = \metaclassing\Utility::recursiveRemoveEmptyArray($VALUE);
             }
         }
 
@@ -357,62 +357,82 @@ class Utility
         return array_intersect_key($input, array_flip(preg_grep($pattern, array_keys($input), $flags)));
     }
 
-        public static function ifconfigInterfaces()
+    public static function ifconfigInterfaces()
+    {
+        $COMMAND = "/sbin/ifconfig";
+        $IFCONFIG = shell_exec($COMMAND);
+        return Utility::parseIfconfig($IFCONFIG);
+    }
+
+    public static function parseIfconfig($IFCONFIG)
+    {
+        $INTERFACES = array();
+
+        $LINES = explode("\n",$IFCONFIG);
+        $INT = "Unknown";
+        // Parse through output and identify interfaces
+        foreach ($LINES as $LINE)
         {
-                $COMMAND = "/sbin/ifconfig";
-                $IFCONFIG = shell_exec($COMMAND);
-                return Utility::parseIfconfig($IFCONFIG);
-        }
+            // Match ($INT) Link encap:(something) (hardware info)
+            $MATCH = "/^(\w+)\s+Link\s+encap:(\w+)\s+(.+)/";
+            if ( preg_match($MATCH,$LINE,$REG) )
+            {
+                $INT = $REG[1];                                         // We found a new interface!
+                $INTERFACES[$INT] = array();
+                $INTERFACES[$INT]["name"] = $INT;                       // Store the interface name
+                $INTERFACES[$INT]["encapsulation"] = $REG[2];           // Encapsulation type
+                $INTERFACES[$INT]["hardware"] = $REG[3];                // Hardware information
+                $INTERFACES[$INT]["ipv4"] = array();                    // and precreate the array of any addresses
+                $INTERFACES[$INT]["ipv6"] = array();                    // for ipv4 and ipv6!
+            }
 
-        public static function parseIfconfig($IFCONFIG)
+            // Match inet addr:(i.p.a.d) blah blah Mask:(255.128.0.0)
+            $MATCH = "/^\s+inet addr:(\S+)\s+.*Mask:(\S+)/";
+            if ( preg_match($MATCH,$LINE,$REG) )
+            {
+                $ADDRESS = array();                                     // We found an address on the interface
+                $ADDRESS["address"] = $REG[1];                          // IPv4 address
+                $ADDRESS["mask"] = $REG[2];                             // Subnet mask
+                array_push($INTERFACES[$INT]["ipv4"],$ADDRESS);         // Stuff this address onto the interface
+            }
+
+            // Match inet6 addr: (i:p:v:6:a:d) blah? Scope:(Global)
+            $MATCH = "/^\s+inet6 addr: (\S+)\s+.*Scope:(\S+)/";
+            if ( preg_match($MATCH,$LINE,$REG) )
+            {
+                $ADDRESS = array();                                     // We found an address on the interface
+                $ADDRESS["address"] = $REG[1];                          // IPv6 address/prefix in CIDR notation!
+                $ADDRESS["scope"] = $REG[2];                            // Network scope
+                array_push($INTERFACES[$INT]["ipv6"],$ADDRESS);         // Stuff this address onto the interface
+            }
+            // TODO: Consider adding MTU, flags, metrics, statistics?
+        }
+        // Remove the loopback interfaces, this just screws up some apps...
+        if ( isset($INTERFACES["lo"]) ) { unset($INTERFACES["lo"]); }
+        return $INTERFACES;
+    }
+
+    public static function recursiveStripTags($INPUT, $ALLOWED_TAGS = "")
+    {
+        //print "Running recursiveStripTags on "; dumper($INPUT); print "<br>\n"; john_flush();
+
+        if (is_assoc($INPUT))       // If this is an associative array, parse it as key => value.
         {
-                $INTERFACES = array();
-
-                $LINES = explode("\n",$IFCONFIG);
-                $INT = "Unknown";
-                // Parse through output and identify interfaces
-                foreach ($LINES as $LINE)
-                {
-                        // Match ($INT) Link encap:(something) (hardware info)
-                        $MATCH = "/^(\w+)\s+Link\s+encap:(\w+)\s+(.+)/";
-                        if ( preg_match($MATCH,$LINE,$REG) )
-                        {
-                                $INT = $REG[1];                                                                 // We found a new interface!
-                                $INTERFACES[$INT] = array();
-                                $INTERFACES[$INT]["name"] = $INT;                               // Store the interface name
-                                $INTERFACES[$INT]["encapsulation"] = $REG[2];   // Encapsulation type
-                                $INTERFACES[$INT]["hardware"] = $REG[3];                // Hardware information
-                                $INTERFACES[$INT]["ipv4"] = array();                    // and precreate the array of any addresses
-                                $INTERFACES[$INT]["ipv6"] = array();                    // for ipv4 and ipv6!
-                        }
-
-                        // Match inet addr:(i.p.a.d) blah blah Mask:(255.128.0.0)
-                        $MATCH = "/^\s+inet addr:(\S+)\s+.*Mask:(\S+)/";
-                        if ( preg_match($MATCH,$LINE,$REG) )
-                        {
-                                $ADDRESS = array();                                                             // We found an address on the interface
-                                $ADDRESS["address"] = $REG[1];                                  // IPv4 address
-                                $ADDRESS["mask"] = $REG[2];                                             // Subnet mask
-                                array_push($INTERFACES[$INT]["ipv4"],$ADDRESS); // Stuff this address onto the interface
-                        }
-
-                        // Match inet6 addr: (i:p:v:6:a:d) blah? Scope:(Global)
-                        $MATCH = "/^\s+inet6 addr: (\S+)\s+.*Scope:(\S+)/";
-                        if ( preg_match($MATCH,$LINE,$REG) )
-                        {
-                                $ADDRESS = array();                                                             // We found an address on the interface
-                                $ADDRESS["address"] = $REG[1];                                  // IPv6 address/prefix in CIDR notation!
-                                $ADDRESS["scope"] = $REG[2];                                    // Network scope
-                                array_push($INTERFACES[$INT]["ipv6"],$ADDRESS); // Stuff this address onto the interface
-                        }
-
-                        // TODO: Consider adding MTU, flags, metrics, statistics?
-                }
-
-                // Remove the loopback interfaces, this just screws up some apps...
-                if ( isset($INTERFACES["lo"]) ) { unset($INTERFACES["lo"]); }
-
-                return $INTERFACES;
-        }
+            foreach($INPUT as $KEY => $VALUE)
+            {
+                $INPUT[$KEY] = \metaclassing\Utility::recursiveStripTags($VALUE, $ALLOWED_TAGS);
+            }
+        }else if(is_array($INPUT))  // If this is a normal array, parse it as $value.
+        {
+            foreach($INPUT as &$VALUE)
+            {
+                $VALUE = \metaclassing\Utility::recursiveStripTags($VALUE, $ALLOWED_TAGS);
+            }
+        }else if(is_string($INPUT)) // If this is a string, run the global strip_tags function.
+        {
+            $INPUT = @strip_tags($INPUT, $ALLOWED_TAGS);
+        }                           // If we dont know wtf we are given, dont muck it up.
+        return $INPUT;
+    }
 
 }
