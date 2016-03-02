@@ -56,17 +56,17 @@ class Utility
         switch (json_last_error()) {
             case JSON_ERROR_NONE:
                 break;
-         case JSON_ERROR_DEPTH:
-             throw new \Exception('The maximum stack depth has been exceeded');
-         case JSON_ERROR_STATE_MISMATCH:
-             throw new \Exception('Invalid or malformed JSON');
-         case JSON_ERROR_CTRL_CHAR:
-             throw new \Exception('Control character error, possibly incorrectly encoded');
-         case JSON_ERROR_SYNTAX:
-             throw new \Exception('Syntax error, malformed JSON');
-         // PHP >= 5.3.3
+            case JSON_ERROR_DEPTH:
+                throw new \Exception('The maximum stack depth has been exceeded');
+            case JSON_ERROR_STATE_MISMATCH:
+                throw new \Exception('Invalid or malformed JSON');
+            case JSON_ERROR_CTRL_CHAR:
+                throw new \Exception('Control character error, possibly incorrectly encoded');
+            case JSON_ERROR_SYNTAX:
+                throw new \Exception('Syntax error, malformed JSON');
+            // PHP >= 5.3.3
             case JSON_ERROR_UTF8:
-              throw new \Exception('Malformed UTF-8 characters, possibly incorrectly encoded');
+                throw new \Exception('Malformed UTF-8 characters, possibly incorrectly encoded');
             // PHP >= 5.5.0
             case JSON_ERROR_RECURSION:
                 throw new \Exception('One or more recursive references in the value to be encoded');
@@ -293,7 +293,7 @@ class Utility
         }
     }
 
-    public function parseNestedListToArray($LIST, $INDENTATION = ' ')
+    public static function parseNestedListToArray($LIST, $INDENTATION = ' ')
     {
         $RESULT = [];
         $PATH = [];
@@ -361,7 +361,7 @@ class Utility
     {
         $COMMAND = "/sbin/ifconfig";
         $IFCONFIG = shell_exec($COMMAND);
-        return Utility::parseIfconfig($IFCONFIG);
+        return \metaclassing\Utility::parseIfconfig($IFCONFIG);
     }
 
     public static function parseIfconfig($IFCONFIG)
