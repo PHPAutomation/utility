@@ -359,80 +359,80 @@ class Utility
 
     public static function ifconfigInterfaces()
     {
-        $COMMAND = "/sbin/ifconfig";
+        $COMMAND = '/sbin/ifconfig';
         $IFCONFIG = shell_exec($COMMAND);
+
         return \metaclassing\Utility::parseIfconfig($IFCONFIG);
     }
 
     public static function parseIfconfig($IFCONFIG)
     {
-        $INTERFACES = array();
+        $INTERFACES = [];
 
-        $LINES = explode("\n",$IFCONFIG);
-        $INT = "Unknown";
+        $LINES = explode("\n", $IFCONFIG);
+        $INT = 'Unknown';
         // Parse through output and identify interfaces
-        foreach ($LINES as $LINE)
-        {
+        foreach ($LINES as $LINE) {
             // Match ($INT) Link encap:(something) (hardware info)
             $MATCH = "/^(\w+)\s+Link\s+encap:(\w+)\s+(.+)/";
-            if ( preg_match($MATCH,$LINE,$REG) )
-            {
+            if (preg_match($MATCH, $LINE, $REG)) {
                 $INT = $REG[1];                                         // We found a new interface!
-                $INTERFACES[$INT] = array();
-                $INTERFACES[$INT]["name"] = $INT;                       // Store the interface name
-                $INTERFACES[$INT]["encapsulation"] = $REG[2];           // Encapsulation type
-                $INTERFACES[$INT]["hardware"] = $REG[3];                // Hardware information
-                $INTERFACES[$INT]["ipv4"] = array();                    // and precreate the array of any addresses
-                $INTERFACES[$INT]["ipv6"] = array();                    // for ipv4 and ipv6!
+                $INTERFACES[$INT] = [];
+                $INTERFACES[$INT]['name'] = $INT;                       // Store the interface name
+                $INTERFACES[$INT]['encapsulation'] = $REG[2];           // Encapsulation type
+                $INTERFACES[$INT]['hardware'] = $REG[3];                // Hardware information
+                $INTERFACES[$INT]['ipv4'] = [];                    // and precreate the array of any addresses
+                $INTERFACES[$INT]['ipv6'] = [];                    // for ipv4 and ipv6!
             }
 
             // Match inet addr:(i.p.a.d) blah blah Mask:(255.128.0.0)
             $MATCH = "/^\s+inet addr:(\S+)\s+.*Mask:(\S+)/";
-            if ( preg_match($MATCH,$LINE,$REG) )
-            {
-                $ADDRESS = array();                                     // We found an address on the interface
-                $ADDRESS["address"] = $REG[1];                          // IPv4 address
-                $ADDRESS["mask"] = $REG[2];                             // Subnet mask
-                array_push($INTERFACES[$INT]["ipv4"],$ADDRESS);         // Stuff this address onto the interface
+            if (preg_match($MATCH, $LINE, $REG)) {
+                $ADDRESS = [];                                     // We found an address on the interface
+                $ADDRESS['address'] = $REG[1];                          // IPv4 address
+                $ADDRESS['mask'] = $REG[2];                             // Subnet mask
+                array_push($INTERFACES[$INT]['ipv4'], $ADDRESS);         // Stuff this address onto the interface
             }
 
             // Match inet6 addr: (i:p:v:6:a:d) blah? Scope:(Global)
             $MATCH = "/^\s+inet6 addr: (\S+)\s+.*Scope:(\S+)/";
-            if ( preg_match($MATCH,$LINE,$REG) )
-            {
-                $ADDRESS = array();                                     // We found an address on the interface
-                $ADDRESS["address"] = $REG[1];                          // IPv6 address/prefix in CIDR notation!
-                $ADDRESS["scope"] = $REG[2];                            // Network scope
-                array_push($INTERFACES[$INT]["ipv6"],$ADDRESS);         // Stuff this address onto the interface
+            if (preg_match($MATCH, $LINE, $REG)) {
+                $ADDRESS = [];                                     // We found an address on the interface
+                $ADDRESS['address'] = $REG[1];                          // IPv6 address/prefix in CIDR notation!
+                $ADDRESS['scope'] = $REG[2];                            // Network scope
+                array_push($INTERFACES[$INT]['ipv6'], $ADDRESS);         // Stuff this address onto the interface
             }
             // TODO: Consider adding MTU, flags, metrics, statistics?
         }
         // Remove the loopback interfaces, this just screws up some apps...
-        if ( isset($INTERFACES["lo"]) ) { unset($INTERFACES["lo"]); }
+        if (isset($INTERFACES['lo'])) {
+            unset($INTERFACES['lo']);
+        }
+
         return $INTERFACES;
     }
 
-    public static function recursiveStripTags($INPUT, $ALLOWED_TAGS = "")
+    public static function recursiveStripTags($INPUT, $ALLOWED_TAGS = '')
     {
         //print "Running recursiveStripTags on "; dumper($INPUT); print "<br>\n"; john_flush();
 
-        if (is_assoc($INPUT))       // If this is an associative array, parse it as key => value.
-        {
-            foreach($INPUT as $KEY => $VALUE)
-            {
+        if (is_assoc($INPUT)) {
+            // If this is an associative array, parse it as key => value.
+
+            foreach ($INPUT as $KEY => $VALUE) {
                 $INPUT[$KEY] = \metaclassing\Utility::recursiveStripTags($VALUE, $ALLOWED_TAGS);
             }
-        }else if(is_array($INPUT))  // If this is a normal array, parse it as $value.
-        {
-            foreach($INPUT as &$VALUE)
-            {
+        } elseif (is_array($INPUT)) {
+            // If this is a normal array, parse it as $value.
+
+            foreach ($INPUT as &$VALUE) {
                 $VALUE = \metaclassing\Utility::recursiveStripTags($VALUE, $ALLOWED_TAGS);
             }
-        }else if(is_string($INPUT)) // If this is a string, run the global strip_tags function.
-        {
+        } elseif (is_string($INPUT)) {
+            // If this is a string, run the global strip_tags function.
+
             $INPUT = @strip_tags($INPUT, $ALLOWED_TAGS);
         }                           // If we dont know wtf we are given, dont muck it up.
         return $INPUT;
     }
-
 }
