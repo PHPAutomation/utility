@@ -436,33 +436,35 @@ class Utility
         return $INPUT;
     }
 
-    public static function drawSmallStatus($TEXT = "", $STATUSCOLOR = "black", $FONTCOLOR = "black" )
+    public static function drawSmallStatus($TEXT = '', $STATUSCOLOR = 'black', $FONTCOLOR = 'black')
     {
-        $FONT = BASEDIR . "/font/arial.ttf";                                // Set Path to Font File
-        $box = @imageTTFBbox(10,0,$FONT,$TEXT);                                 // Cheap trick to figure out how big to make our image
+        $FONT = BASEDIR.'/font/arial.ttf';                                // Set Path to Font File
+        $box = @imagettfbbox(10, 0, $FONT, $TEXT);                                 // Cheap trick to figure out how big to make our image
         $textwidth = abs($box[4] - $box[0]);
         $textheight = abs($box[5] - $box[1]);
         $WIDTH = 11 + $textwidth;                                               // Now our images have a dynamic width based on text length!
         $HEIGHT = 2 + $textheight;                                              // and a dynamic height
-        if ($HEIGHT < 10) { $HEIGHT = 13; }
+        if ($HEIGHT < 10) {
+            $HEIGHT = 13;
+        }
 
-        $IMAGE = imagecreatetruecolor($WIDTH,$HEIGHT);                          // Create our GD image object
+        $IMAGE = imagecreatetruecolor($WIDTH, $HEIGHT);                          // Create our GD image object
 
-        $COLORS = array();                                                      // Create a pallet of colors
-        $COLORS['transparent']  = imagecolorallocate($IMAGE,    254 ,   254 ,   254 );
-        $COLORS['white']        = imagecolorallocate($IMAGE,    255 ,   255 ,   255 );
-        $COLORS['black']        = imagecolorallocate($IMAGE,    0   ,   0   ,   0   );
-        $COLORS['gray']         = imagecolorallocate($IMAGE,    127 ,   127 ,   127 );
-        $COLORS['red']          = imagecolorallocate($IMAGE,    255 ,   0   ,   0   );
-        $COLORS['green']        = imagecolorallocate($IMAGE,    0   ,   224 ,   0   );
-        $COLORS['blue']         = imagecolorallocate($IMAGE,    0   ,   0   ,   255 );
-        $COLORS['yellow']       = imagecolorallocate($IMAGE,    255 ,   255 ,   0   );
-        $COLORS['orange']       = imagecolorallocate($IMAGE,    255 ,   165 ,   0   );
+        $COLORS = [];                                                      // Create a pallet of colors
+        $COLORS['transparent'] = imagecolorallocate($IMAGE, 254, 254, 254);
+        $COLORS['white'] = imagecolorallocate($IMAGE, 255, 255, 255);
+        $COLORS['black'] = imagecolorallocate($IMAGE, 0, 0, 0);
+        $COLORS['gray'] = imagecolorallocate($IMAGE, 127, 127, 127);
+        $COLORS['red'] = imagecolorallocate($IMAGE, 255, 0, 0);
+        $COLORS['green'] = imagecolorallocate($IMAGE, 0, 224, 0);
+        $COLORS['blue'] = imagecolorallocate($IMAGE, 0, 0, 255);
+        $COLORS['yellow'] = imagecolorallocate($IMAGE, 255, 255, 0);
+        $COLORS['orange'] = imagecolorallocate($IMAGE, 255, 165, 0);
 
-        imagefill($IMAGE,0,0,$COLORS['transparent']);                           // Fill the image with our transparent color
+        imagefill($IMAGE, 0, 0, $COLORS['transparent']);                           // Fill the image with our transparent color
         imagefilledellipse($IMAGE, 6, 6, 10, 10, $COLORS[$STATUSCOLOR]);        // Print a filled ellipse
-        imagefilledellipse($IMAGE, 6, 6, 7,  7,  $COLORS["transparent"]);       // Print a filled ellipse
-        imagefilledellipse($IMAGE, 6, 6, 3,  3,  $COLORS[$STATUSCOLOR]);        // Print a filled ellipse
+        imagefilledellipse($IMAGE, 6, 6, 7, 7, $COLORS['transparent']);       // Print a filled ellipse
+        imagefilledellipse($IMAGE, 6, 6, 3, 3, $COLORS[$STATUSCOLOR]);        // Print a filled ellipse
         imagettftext($IMAGE, 10, 0, 13, 11, $COLORS[$FONTCOLOR], $FONT, $TEXT); // Print Text On Image
         imagecolortransparent($IMAGE, $COLORS['transparent']);                  // Create a transparent background
 
@@ -473,5 +475,4 @@ class Utility
         imagedestroy($IMAGE);                                                   // Clean up the image
         return $RETURN;
     }
-
 }
