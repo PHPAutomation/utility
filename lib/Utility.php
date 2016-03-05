@@ -327,16 +327,6 @@ class Utility
         return $RETURN;
     }
 
-    // Find if a character $NEEDLE is in a string $HAYSTACK defaulting to case sensitive!
-    public static function inString($needle, $haystack, $insensitive = false)
-    {
-        if ($insensitive) {
-            return false !== stristr($haystack, $needle);
-        } else {
-            return false !== strpos($haystack, $needle);
-        }
-    }
-
     public static function pregGrepKeys($pattern, $input, $flags = 0)
     {
         return array_intersect_key($input, array_flip(preg_grep($pattern, array_keys($input), $flags)));
