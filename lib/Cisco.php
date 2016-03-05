@@ -30,7 +30,6 @@ class Cisco
 {
     public function __construct()
     {
-        throw new \Exception("Do not create instances of this object, call public static member functions like \metaclassing\Cisco::someDumbThing(params)");
     }
 
 	public static function findManagementInterface($CONFIG)
@@ -111,9 +110,8 @@ class Cisco
 	public static function inventoryToModel($show_inventory)
 	{
 	    $model = "Unknown";
-	    $invlines = explode("\r\n",$sho	w_inventory);
-	    foreach ($invlines as $line)
-	    {
+	    $invlines = explode("\r\n",$show_inventory);
+	    foreach ($invlines as $line) {
 	        // LEGACY PERL CODE: $x =~ /^\s*PID:\s(\S+).*SN:\s+(\S+)\s*$/;
 	        if (preg_match('/.*PID:\s(\S+)\s.*/',$line,$reg))
 	        {

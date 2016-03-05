@@ -278,21 +278,6 @@ class Utility
         return is_array($var) && array_diff_key($var, array_keys(array_keys($var)));
     }
 
-    public static function flush()
-    {
-        if (php_sapi_name() != 'cli') {
-            // DONT FLUSH THE FUCKING CLI!
-
-    //      echo(str_repeat(' ',256));
-            if (ob_get_length()) {
-                @ob_flush();
-                @flush();
-                @ob_end_flush();
-            }
-            @ob_start();
-        }
-    }
-
     public static function parseNestedListToArray($LIST, $INDENTATION = ' ')
     {
         $RESULT = [];
