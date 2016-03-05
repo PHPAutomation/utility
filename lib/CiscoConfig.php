@@ -29,830 +29,904 @@ namespace metaclassing;
 
 class CiscoConfig
 {
-	public	$Error;
-	public	$debug = FALSE;
+    public $Error;
+    public $debug = false;
 
-	private	$Host;
-	private	$Community;
+    private $Host;
+    private $Community;
 
-	private $RandomNumber;
+    private $RandomNumber;
 
-	private $ConfigCopyOID = array(
-		'ccCopyProtocol' => '.1.3.6.1.4.1.9.9.96.1.1.1.1.2',
-		'ccCopySourceFileType' => '.1.3.6.1.4.1.9.9.96.1.1.1.1.3',
-		'ccCopyDestFileType' => '.1.3.6.1.4.1.9.9.96.1.1.1.1.4',
-		'ccCopyServerAddress' => '.1.3.6.1.4.1.9.9.96.1.1.1.1.5',
-		'ccCopyFileName' => '.1.3.6.1.4.1.9.9.96.1.1.1.1.6',
-		'ccCopyUserName' => '.1.3.6.1.4.1.9.9.96.1.1.1.1.7',
-		'ccCopyUserPassword' => '.1.3.6.1.4.1.9.9.96.1.1.1.1.8',
-		'ccCopyNotificationOnCompletion' => '.1.3.6.1.4.1.9.9.96.1.1.1.1.9',
-		'ccCopyState' => '.1.3.6.1.4.1.9.9.96.1.1.1.1.10',
-		'ccCopyTimeStarted' => '.1.3.6.1.4.1.9.9.96.1.1.1.1.11',
-		'ccCopyTimeCompleted' => '.1.3.6.1.4.1.9.9.96.1.1.1.1.12',
-		'ccCopyFailCause' => '.1.3.6.1.4.1.9.9.96.1.1.1.1.13',
-		'ccCopyEntryRowStatus' => '.1.3.6.1.4.1.9.9.96.1.1.1.1.14',
-		'ccCopyServerAddressType' => '.1.3.6.1.4.1.9.9.96.1.1.1.1.15',
-		'ccCopyServerAddressRev1' => '.1.3.6.1.4.1.9.9.96.1.1.1.1.16',
-	);
+    private $ConfigCopyOID = [
+        'ccCopyProtocol'                 => '.1.3.6.1.4.1.9.9.96.1.1.1.1.2',
+        'ccCopySourceFileType'           => '.1.3.6.1.4.1.9.9.96.1.1.1.1.3',
+        'ccCopyDestFileType'             => '.1.3.6.1.4.1.9.9.96.1.1.1.1.4',
+        'ccCopyServerAddress'            => '.1.3.6.1.4.1.9.9.96.1.1.1.1.5',
+        'ccCopyFileName'                 => '.1.3.6.1.4.1.9.9.96.1.1.1.1.6',
+        'ccCopyUserName'                 => '.1.3.6.1.4.1.9.9.96.1.1.1.1.7',
+        'ccCopyUserPassword'             => '.1.3.6.1.4.1.9.9.96.1.1.1.1.8',
+        'ccCopyNotificationOnCompletion' => '.1.3.6.1.4.1.9.9.96.1.1.1.1.9',
+        'ccCopyState'                    => '.1.3.6.1.4.1.9.9.96.1.1.1.1.10',
+        'ccCopyTimeStarted'              => '.1.3.6.1.4.1.9.9.96.1.1.1.1.11',
+        'ccCopyTimeCompleted'            => '.1.3.6.1.4.1.9.9.96.1.1.1.1.12',
+        'ccCopyFailCause'                => '.1.3.6.1.4.1.9.9.96.1.1.1.1.13',
+        'ccCopyEntryRowStatus'           => '.1.3.6.1.4.1.9.9.96.1.1.1.1.14',
+        'ccCopyServerAddressType'        => '.1.3.6.1.4.1.9.9.96.1.1.1.1.15',
+        'ccCopyServerAddressRev1'        => '.1.3.6.1.4.1.9.9.96.1.1.1.1.16',
+    ];
 
-	private	$CopyProtocol = array(
-		'tftp' => 1,
-		'ftp' => 2,
-		'rcp' => 3,
-		'scp' => 4,
-		'sftp' => 5 
-	);
+    private $CopyProtocol = [
+        'tftp' => 1,
+        'ftp'  => 2,
+        'rcp'  => 3,
+        'scp'  => 4,
+        'sftp' => 5,
+    ];
 
-	private	$ConfigFileType = array( 
-		'networkFile' => 1, 
-		'iosFile' => 2, 
-		'startupConfig' => 3, 
-		'runningConfig' => 4, 
-		'terminal' => 5,
-		'fabricStartupConfig' => 6 
-	);
+    private $ConfigFileType = [
+        'networkFile'         => 1,
+        'iosFile'             => 2,
+        'startupConfig'       => 3,
+        'runningConfig'       => 4,
+        'terminal'            => 5,
+        'fabricStartupConfig' => 6,
+    ];
 
-	private $RowStatus = array(
-		'active' => 1,
-		'notInService' => 2,
-		'notReady' => 3,
-		'createAndGo' => 4,
-		'createAndWait' => 5,
-		'destroy' => 6
-	);
+    private $RowStatus = [
+        'active'        => 1,
+        'notInService'  => 2,
+        'notReady'      => 3,
+        'createAndGo'   => 4,
+        'createAndWait' => 5,
+        'destroy'       => 6,
+    ];
 
-	private	$ConfigCopyState = array(
-		1 => 'waiting',
-		2 => 'running',
-		3 => 'successful',
-		4 => 'failed'
-	);
+    private $ConfigCopyState = [
+        1 => 'waiting',
+        2 => 'running',
+        3 => 'successful',
+        4 => 'failed',
+    ];
 
-	private	$ConfigCopyFailCause = array(
-		1 => 'unknown',
-		2 => 'badFileName',
-		3 => 'timeout',
-		4 => 'noMem',
-		5 => 'noConfig',
-		6 => 'unsupportedProtocol',
-		7 => 'someConfigApplyFailed',
-		8 => 'systemNotReady',
-		9 => 'requestAborted' 
-	);
+    private $ConfigCopyFailCause = [
+        1 => 'unknown',
+        2 => 'badFileName',
+        3 => 'timeout',
+        4 => 'noMem',
+        5 => 'noConfig',
+        6 => 'unsupportedProtocol',
+        7 => 'someConfigApplyFailed',
+        8 => 'systemNotReady',
+        9 => 'requestAborted',
+    ];
 
-	function __construct( $Host, $Community )
-	{
-		//check snmp module
-		if( !@extension_loaded( 'snmp' ) ) {
-			if( !@dl( 'snmp.so' ) ) {
-				die( 'Unable to Load SNMP Module' );
-			}
-		}
+    public function __construct($Host, $Community)
+    {
+        //check snmp module
+        if (!@extension_loaded('snmp')) {
+            if (!@dl('snmp.so')) {
+                die('Unable to Load SNMP Module');
+            }
+        }
 
-		snmp_set_valueretrieval(SNMP_VALUE_PLAIN);
+        snmp_set_valueretrieval(SNMP_VALUE_PLAIN);
 
-		$this->Host		= $Host;
-		$this->Community	= $Community;
-		$this->RandomNumber	= rand( 1, 65535 );
-		//$this->RandomNumber	= rand();
-	}
-	
-	function __destruct() {
-		// Destroy Config Copy Entry
-		//$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-	}
+        $this->Host = $Host;
+        $this->Community = $Community;
+        $this->RandomNumber = rand(1, 65535);
+        //$this->RandomNumber	= rand();
+    }
 
-	private function SetCopyEntryRowStatus( $RowStatus )
-	{
-		$Host = $this->Host;
-		$Community = $this->Community;
+    public function __destruct()
+    {
+        // Destroy Config Copy Entry
+        //$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
+    }
 
-		if( $this->debug ) {
-			printf( "\nSetting Config Copy Entry:\n" );
-			printf( "CISCO-CONFIG-COPY-MIB::ccCopyEntryRowStatus.%d to %s ...\n", 
-				$this->RandomNumber, 
-				array_search( $RowStatus, $this->RowStatus ) );
-		}
+    private function SetCopyEntryRowStatus($RowStatus)
+    {
+        $Host = $this->Host;
+        $Community = $this->Community;
 
-		//Setting Copy Entry
-		$oid = $this->ConfigCopyOID['ccCopyEntryRowStatus'] . 
-			'.' . $this->RandomNumber;
+        if ($this->debug) {
+            printf("\nSetting Config Copy Entry:\n");
+            printf("CISCO-CONFIG-COPY-MIB::ccCopyEntryRowStatus.%d to %s ...\n",
+                $this->RandomNumber,
+                array_search($RowStatus, $this->RowStatus));
+        }
 
-		if( snmpset( $Host, $Community, $oid, 'i', $RowStatus , 2000000 , 2) ) // edited to add 2 second timeout each (microseconds) and 2 attempt
-		{
-			if( $this->debug ) {
-				printf( "CISCO-CONFIG-COPY-MIB::" );
-				printf( "ccCopyEntryRowStatus.%d ... Response OK\n", 
-					$this->RandomNumber ); 
-			}
-			return TRUE;
-		} else {
-			$this->Error = "CISCO-CONFIG-COPY-MIB::ccCopyEntryRowStatus No Response or Response Error";
-			return FALSE;
-		}
-	}
+        //Setting Copy Entry
+        $oid = $this->ConfigCopyOID['ccCopyEntryRowStatus'].
+            '.'.$this->RandomNumber;
 
-	private function SetSourceFileType( $ConfigFileType )
-	{
-		$Host = $this->Host;
-		$Community = $this->Community;
+        if (snmpset($Host, $Community, $oid, 'i', $RowStatus, 2000000, 2)) {
+            // edited to add 2 second timeout each (microseconds) and 2 attempt
 
-		if( $this->debug ) {
-			printf( "\nSetting Source File Type:\n" );
-			printf( "CISCO-CONFIG-COPY-MIB::ccCopySourceFileType.%d to %s ...\n", 
-				$this->RandomNumber, 
-				array_search( $ConfigFileType, $this->ConfigFileType ) );
-		}
+            if ($this->debug) {
+                printf('CISCO-CONFIG-COPY-MIB::');
+                printf("ccCopyEntryRowStatus.%d ... Response OK\n",
+                    $this->RandomNumber);
+            }
 
-		// Set Source File Type Value to running-config
-		$oid = $this->ConfigCopyOID['ccCopySourceFileType'] . 
-			'.' . $this->RandomNumber;
+            return true;
+        } else {
+            $this->Error = 'CISCO-CONFIG-COPY-MIB::ccCopyEntryRowStatus No Response or Response Error';
+
+            return false;
+        }
+    }
+
+    private function SetSourceFileType($ConfigFileType)
+    {
+        $Host = $this->Host;
+        $Community = $this->Community;
+
+        if ($this->debug) {
+            printf("\nSetting Source File Type:\n");
+            printf("CISCO-CONFIG-COPY-MIB::ccCopySourceFileType.%d to %s ...\n",
+                $this->RandomNumber,
+                array_search($ConfigFileType, $this->ConfigFileType));
+        }
+
+        // Set Source File Type Value to running-config
+        $oid = $this->ConfigCopyOID['ccCopySourceFileType'].
+            '.'.$this->RandomNumber;
 //		echo "ConfigFileType: $ConfigFileType\n";
-		if( snmpset( $Host, $Community, $oid, 'i', $ConfigFileType ) )
-		{
-			if( $this->debug ) {
-				printf( "CISCO-CONFIG-COPY-MIB::" );
-				printf( "ccCopySourceFileType.%d ... Response OK\n", 
-					$this->RandomNumber );
-			}
-			return TRUE;
-		} else {
-			$this->Error = "CISCO-CONFIG-COPY-MIB::ccCopySourceFileType No Response or Response Error";
-			return FALSE;
-		}
-	}
+        if (snmpset($Host, $Community, $oid, 'i', $ConfigFileType)) {
+            if ($this->debug) {
+                printf('CISCO-CONFIG-COPY-MIB::');
+                printf("ccCopySourceFileType.%d ... Response OK\n",
+                    $this->RandomNumber);
+            }
 
-	private function SetDestFileType( $ConfigFileType )
-	{
-		$Host = $this->Host;
-		$Community = $this->Community;
+            return true;
+        } else {
+            $this->Error = 'CISCO-CONFIG-COPY-MIB::ccCopySourceFileType No Response or Response Error';
 
-		if( $this->debug ) {
-			printf( "\nSetting Destination File Type:\n" );
-			printf( "CISCO-CONFIG-COPY-MIB::ccCopyDestFileType.%d to %s ...\n", 
-				$this->RandomNumber, 
-				array_search( $ConfigFileType, $this->ConfigFileType ) );
-		}
+            return false;
+        }
+    }
 
-		// Set Destination File Type Value to networkFile
-		$oid = $this->ConfigCopyOID['ccCopyDestFileType'] . 
-			'.' . $this->RandomNumber;
-		if( snmpset( $Host, $Community, $oid, 'i', $ConfigFileType ) )
-		{
-			if( $this->debug ) {
-				printf( "CISCO-CONFIG-COPY-MIB::" );
-				printf( "ccCopyDestFileType.%d ... Response OK\n", 
-					$this->RandomNumber );
-			}
-			return TRUE;
-		} else {
-			$this->Error = "CISCO-CONFIG-COPY-MIB::ccCopyDestFileType No Response or Response Error";
-			return FALSE;
-		}
-	}
+    private function SetDestFileType($ConfigFileType)
+    {
+        $Host = $this->Host;
+        $Community = $this->Community;
 
-	private function SetCopyProtocol( $Protocol )
-	{
-		$Host = $this->Host;
-		$Community = $this->Community;
+        if ($this->debug) {
+            printf("\nSetting Destination File Type:\n");
+            printf("CISCO-CONFIG-COPY-MIB::ccCopyDestFileType.%d to %s ...\n",
+                $this->RandomNumber,
+                array_search($ConfigFileType, $this->ConfigFileType));
+        }
 
-		if( $this->debug ) {
-			printf( "\nSetting Copy Procotol:\n" );
-			printf( "CISCO-CONFIG-COPY-MIB::ccCopyProtocol.%d to %s ...\n", 
-				$this->RandomNumber, 
-				array_search( $Protocol , $this->CopyProtocol ) );
-		}
+        // Set Destination File Type Value to networkFile
+        $oid = $this->ConfigCopyOID['ccCopyDestFileType'].
+            '.'.$this->RandomNumber;
+        if (snmpset($Host, $Community, $oid, 'i', $ConfigFileType)) {
+            if ($this->debug) {
+                printf('CISCO-CONFIG-COPY-MIB::');
+                printf("ccCopyDestFileType.%d ... Response OK\n",
+                    $this->RandomNumber);
+            }
 
-		// Set Copy Protocol
-		$oid = $this->ConfigCopyOID['ccCopyProtocol'] . 
-			'.' . $this->RandomNumber;
-		if( @snmpset( $Host, $Community, $oid, 'i', $Protocol ) ) {
-			if( $this->debug ) {
-				printf( "CISCO-CONFIG-COPY-MIB::" );
-				printf( "ccCopyProtocol.%d ... Response OK\n", 
-					$this->RandomNumber ); 
-			}
-			return TRUE;
-		} else {
-			$this->Error = "unsupported Protocol";
-			return FALSE;
-		}
-	}
+            return true;
+        } else {
+            $this->Error = 'CISCO-CONFIG-COPY-MIB::ccCopyDestFileType No Response or Response Error';
 
-	private function SetCopyServerAddress( $Address )
-	{
-		$Host = $this->Host;
-		$Community = $this->Community;
+            return false;
+        }
+    }
 
-		if( $this->debug ) {
-			printf( "\nSetting Server IP Address:\n" );
-			printf( "CISCO-CONFIG-COPY-MIB::ccCopyServerAddress.%d to %s ...\n", 
-				$this->RandomNumber, 
-				$Address );
-		}
+    private function SetCopyProtocol($Protocol)
+    {
+        $Host = $this->Host;
+        $Community = $this->Community;
 
-		// Set Server IP Address
-		$oid = $this->ConfigCopyOID['ccCopyServerAddress'] . 
-			'.' . $this->RandomNumber;
-		if( snmpset( $Host, $Community, $oid, 'a', $Address ) ) {
-			if( $this->debug ) {
-				printf( "CISCO-CONFIG-COPY-MIB::" );
-				printf( "ccCopyServerAddress.%d ... Response OK\n", 
-					$this->RandomNumber ); 
-			}
-			return TRUE;
-		} else {
-			$this->Error = "CISCO-CONFIG-COPY-MIB::ccCopyServerAddress No Response or Response Error";
-			return FALSE;
-		}
-	}
+        if ($this->debug) {
+            printf("\nSetting Copy Procotol:\n");
+            printf("CISCO-CONFIG-COPY-MIB::ccCopyProtocol.%d to %s ...\n",
+                $this->RandomNumber,
+                array_search($Protocol, $this->CopyProtocol));
+        }
 
-	private function SetCopyFileName( $DestFileName )
-	{
-		$Host = $this->Host;
-		$Community = $this->Community;
+        // Set Copy Protocol
+        $oid = $this->ConfigCopyOID['ccCopyProtocol'].
+            '.'.$this->RandomNumber;
+        if (@snmpset($Host, $Community, $oid, 'i', $Protocol)) {
+            if ($this->debug) {
+                printf('CISCO-CONFIG-COPY-MIB::');
+                printf("ccCopyProtocol.%d ... Response OK\n",
+                    $this->RandomNumber);
+            }
 
-		if( $this->debug ) {
-			printf( "\nSetting Destination FileName:\n" );
-			printf( "CISCO-CONFIG-COPY-MIB::ccCopyFileName.%d to %s ...\n", 
-				$this->RandomNumber, 
-				$DestFileName );
-		}
+            return true;
+        } else {
+            $this->Error = 'unsupported Protocol';
 
-		// Set Destination File Name
-		$oid = $this->ConfigCopyOID['ccCopyFileName'] . 
-			'.' . $this->RandomNumber;
-		if( snmpset( $Host, $Community, $oid, 's', $DestFileName ) ) {
-			if( $this->debug ) {
-				printf( "CISCO-CONFIG-COPY-MIB::" );
-				printf( "ccCopyFileName.%d ... Response OK\n", 
-					$this->RandomNumber ); 
-			}
-			return TRUE;
-		} else {
-			$this->Error = "CISCO-CONFIG-COPY-MIB::ccCopyFileName No Response or Response Error";
-			return FALSE;
-		}
-		
-	}
+            return false;
+        }
+    }
 
-	private function SetCopyUserName( $UserName )
-	{
-		$Host = $this->Host;
-		$Community = $this->Community;
+    private function SetCopyServerAddress($Address)
+    {
+        $Host = $this->Host;
+        $Community = $this->Community;
 
-		if( $this->debug ) {
-			printf( "\nSetting Login UserName:\n" );
-			printf( "CISCO-CONFIG-COPY-MIB::ccCopyUserName.%d to %s ...\n", 
-				$this->RandomNumber, 
-				$UserName );
-		}
+        if ($this->debug) {
+            printf("\nSetting Server IP Address:\n");
+            printf("CISCO-CONFIG-COPY-MIB::ccCopyServerAddress.%d to %s ...\n",
+                $this->RandomNumber,
+                $Address);
+        }
 
-		// Set Login User Name
-		$oid = $this->ConfigCopyOID['ccCopyUserName'] . 
-			'.' . $this->RandomNumber;
-		if( snmpset( $Host, $Community, $oid, 's', $UserName ) ) {
-			if( $this->debug ) {
-				printf( "CISCO-CONFIG-COPY-MIB::" );
-				printf( "ccCopyUserName.%d ... Response OK\n", 
-					$this->RandomNumber ); 
-			}
-			return TRUE;
-		} else {
-			$this->Error = "CISCO-CONFIG-COPY-MIB::ccCopyUserName No Response or Response Error";
-			return FALSE;
-		}
-		
-	}
+        // Set Server IP Address
+        $oid = $this->ConfigCopyOID['ccCopyServerAddress'].
+            '.'.$this->RandomNumber;
+        if (snmpset($Host, $Community, $oid, 'a', $Address)) {
+            if ($this->debug) {
+                printf('CISCO-CONFIG-COPY-MIB::');
+                printf("ccCopyServerAddress.%d ... Response OK\n",
+                    $this->RandomNumber);
+            }
 
-	private function SetCopyUserPassword( $UserPassword )
-	{
-		$Host = $this->Host;
-		$Community = $this->Community;
+            return true;
+        } else {
+            $this->Error = 'CISCO-CONFIG-COPY-MIB::ccCopyServerAddress No Response or Response Error';
 
-		if( $this->debug ) {
-			printf( "\nSetting Login Password:\n" );
-			printf( "CISCO-CONFIG-COPY-MIB::ccCopyUserPassword.%d to %s ...\n", 
-				$this->RandomNumber, 
-				$UserPassword );
-		}
+            return false;
+        }
+    }
 
-		// Set Login Password
-		$oid = $this->ConfigCopyOID['ccCopyUserPassword'] . 
-			'.' . $this->RandomNumber;
-		if( snmpset( $Host, $Community, $oid, 's', $UserPassword ) ) {
-			if( $this->debug ) {
-				printf( "CISCO-CONFIG-COPY-MIB::" );
-				printf( "ccCopyUserPassword.%d ... Response OK\n", 
-					$this->RandomNumber ); 
-			}
-			return TRUE;
-		} else {
-			$this->Error = "CISCO-CONFIG-COPY-MIB::ccCopyUserPassword No Response or Response Error";
-			return FALSE;
-		}
+    private function SetCopyFileName($DestFileName)
+    {
+        $Host = $this->Host;
+        $Community = $this->Community;
 
-	}
+        if ($this->debug) {
+            printf("\nSetting Destination FileName:\n");
+            printf("CISCO-CONFIG-COPY-MIB::ccCopyFileName.%d to %s ...\n",
+                $this->RandomNumber,
+                $DestFileName);
+        }
 
-	private function CheckCopyStats( )
-	{
-		$Host = $this->Host;
-		$Community = $this->Community;
+        // Set Destination File Name
+        $oid = $this->ConfigCopyOID['ccCopyFileName'].
+            '.'.$this->RandomNumber;
+        if (snmpset($Host, $Community, $oid, 's', $DestFileName)) {
+            if ($this->debug) {
+                printf('CISCO-CONFIG-COPY-MIB::');
+                printf("ccCopyFileName.%d ... Response OK\n",
+                    $this->RandomNumber);
+            }
 
-		if( $this->debug ) {
-			printf( "\nChecking Config Copy State:\n" );
-		}
+            return true;
+        } else {
+            $this->Error = 'CISCO-CONFIG-COPY-MIB::ccCopyFileName No Response or Response Error';
 
-		$oid = $this->ConfigCopyOID['ccCopyState'] .
-			'.' . $this->RandomNumber;
-		$i = 0;
-		do {
-			$State = snmpget( $Host, $Community, $oid );
+            return false;
+        }
+    }
 
-			if($this->debug) {
-				printf( "CISCO-CONFIG-COPY-MIB::" );
-				printf( "ccCopyState.%d ... Response %s\n",
-					$this->RandomNumber,
-					$this->ConfigCopyState[$State] );
+    private function SetCopyUserName($UserName)
+    {
+        $Host = $this->Host;
+        $Community = $this->Community;
+
+        if ($this->debug) {
+            printf("\nSetting Login UserName:\n");
+            printf("CISCO-CONFIG-COPY-MIB::ccCopyUserName.%d to %s ...\n",
+                $this->RandomNumber,
+                $UserName);
+        }
+
+        // Set Login User Name
+        $oid = $this->ConfigCopyOID['ccCopyUserName'].
+            '.'.$this->RandomNumber;
+        if (snmpset($Host, $Community, $oid, 's', $UserName)) {
+            if ($this->debug) {
+                printf('CISCO-CONFIG-COPY-MIB::');
+                printf("ccCopyUserName.%d ... Response OK\n",
+                    $this->RandomNumber);
+            }
+
+            return true;
+        } else {
+            $this->Error = 'CISCO-CONFIG-COPY-MIB::ccCopyUserName No Response or Response Error';
+
+            return false;
+        }
+    }
+
+    private function SetCopyUserPassword($UserPassword)
+    {
+        $Host = $this->Host;
+        $Community = $this->Community;
+
+        if ($this->debug) {
+            printf("\nSetting Login Password:\n");
+            printf("CISCO-CONFIG-COPY-MIB::ccCopyUserPassword.%d to %s ...\n",
+                $this->RandomNumber,
+                $UserPassword);
+        }
+
+        // Set Login Password
+        $oid = $this->ConfigCopyOID['ccCopyUserPassword'].
+            '.'.$this->RandomNumber;
+        if (snmpset($Host, $Community, $oid, 's', $UserPassword)) {
+            if ($this->debug) {
+                printf('CISCO-CONFIG-COPY-MIB::');
+                printf("ccCopyUserPassword.%d ... Response OK\n",
+                    $this->RandomNumber);
+            }
+
+            return true;
+        } else {
+            $this->Error = 'CISCO-CONFIG-COPY-MIB::ccCopyUserPassword No Response or Response Error';
+
+            return false;
+        }
+    }
+
+    private function CheckCopyStats()
+    {
+        $Host = $this->Host;
+        $Community = $this->Community;
+
+        if ($this->debug) {
+            printf("\nChecking Config Copy State:\n");
+        }
+
+        $oid = $this->ConfigCopyOID['ccCopyState'].
+            '.'.$this->RandomNumber;
+        $i = 0;
+        do {
+            $State = snmpget($Host, $Community, $oid);
+
+            if ($this->debug) {
+                printf('CISCO-CONFIG-COPY-MIB::');
+                printf("ccCopyState.%d ... Response %s\n",
+                    $this->RandomNumber,
+                    $this->ConfigCopyState[$State]);
 //					var_dump($State);
 //					var_dump($this->ConfigCopyState);
-			}
+            }
 
-			if( intval($State) == 3 )
-				return TRUE;
+            if (intval($State) == 3) {
+                return true;
+            }
 
-			if( intval($State) == 4 ) {
-				$Error = snmpget( $Host, $Community,
-					$this->ConfigCopyOID['ccCopyFailCause']
-					. '.' . $this->RandomNumber );
-				$this->Error = $this->ConfigCopyFailCause[$Error];
-				return FALSE;
-			}
-			sleep( 1 );
-		} while( $i++ < 10 );
-	}
+            if (intval($State) == 4) {
+                $Error = snmpget($Host, $Community,
+                    $this->ConfigCopyOID['ccCopyFailCause']
+                    .'.'.$this->RandomNumber);
+                $this->Error = $this->ConfigCopyFailCause[$Error];
 
-	private function GetCopyFailCause()
-	{
-		$Host = $this->Host;
-		$Community = $this->Community;
+                return false;
+            }
+            sleep(1);
+        } while ($i++ < 10);
+    }
 
-		$Error = snmpget( $Host, $Community,
-			$this->ConfigCopyOID['ccCopyFailCause']
-			. '.' . $this->RandomNumber );
-		return $this->ConfigCopyFailCause[$Error];
-	}
+    private function GetCopyFailCause()
+    {
+        $Host = $this->Host;
+        $Community = $this->Community;
 
-	public function WriteMemory()
-	{
-		$RowStatus = $this->RowStatus;
-		$ConfigFileType = $this->ConfigFileType;
+        $Error = snmpget($Host, $Community,
+            $this->ConfigCopyOID['ccCopyFailCause']
+            .'.'.$this->RandomNumber);
 
-		//Create Copy Entry and Wait
-		if( !$this->SetCopyEntryRowStatus( $RowStatus['createAndWait']) ) {
-			return FALSE;
-		}
+        return $this->ConfigCopyFailCause[$Error];
+    }
 
-		// Set Source File Type Value to running-config
-		if( !$this->SetSourceFileType( $ConfigFileType['runningConfig'] ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $RowStatus['destroy'] );
-			return FALSE;
-		}
+    public function WriteMemory()
+    {
+        $RowStatus = $this->RowStatus;
+        $ConfigFileType = $this->ConfigFileType;
 
-		// Set Destination File Type Value to startup-config
-		if( !$this->SetDestFileType( $ConfigFileType['startupConfig'] ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $RowStatus['destroy'] );
-			return FALSE;
-		}
+        //Create Copy Entry and Wait
+        if (!$this->SetCopyEntryRowStatus($RowStatus['createAndWait'])) {
+            return false;
+        }
 
-		//Do it
-		if( !$this->SetCopyEntryRowStatus( $RowStatus['active'] ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $RowStatus['destroy'] );
-			return FALSE;
-		}
+        // Set Source File Type Value to running-config
+        if (!$this->SetSourceFileType($ConfigFileType['runningConfig'])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($RowStatus['destroy']);
 
-		if( !$this->CheckCopyStats() ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $RowStatus['destroy'] );
-			return FALSE;
-		}
+            return false;
+        }
 
-		// Destroy Config Copy Entry
-		$this->SetCopyEntryRowStatus( $RowStatus['destroy'] );
-		return TRUE;
-	}
+        // Set Destination File Type Value to startup-config
+        if (!$this->SetDestFileType($ConfigFileType['startupConfig'])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($RowStatus['destroy']);
 
-	public function WriteNetwork( $FileName, $Protocol, $Server,
-		$Login = NULL, $Password = NULL )
-	{
+            return false;
+        }
 
-		// Check Protocol
-		if( !array_key_exists( $Protocol, $this->CopyProtocol ) ) {
-			$this->Error = "not support protocol";
-			return FALSE;
-		}
+        //Do it
+        if (!$this->SetCopyEntryRowStatus($RowStatus['active'])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($RowStatus['destroy']);
 
-		//Create Copy Entry and Wait
-		if( !$this->SetCopyEntryRowStatus( $this->RowStatus['createAndWait']) ) {
-			return FALSE;
-		}
+            return false;
+        }
 
-		// Set Source File Type Value to runningConfig
-		if( !$this->SetSourceFileType( $this->ConfigFileType['runningConfig'] ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+        if (!$this->CheckCopyStats()) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($RowStatus['destroy']);
 
-		// Set Destination File Type Value to networkFile
-		if( !$this->SetDestFileType( $this->ConfigFileType['networkFile'] ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+            return false;
+        }
 
-		// Set Copy Protocol
-		if( !$this->SetCopyProtocol( $this->CopyProtocol[$Protocol] ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+        // Destroy Config Copy Entry
+        $this->SetCopyEntryRowStatus($RowStatus['destroy']);
 
-		// Set Server IP Address
-		if( !$this->SetCopyServerAddress( $Server ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+        return true;
+    }
 
-		// Set Destination File Name
-		if( !$this->SetCopyFileName( $FileName ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+    public function WriteNetwork($FileName, $Protocol, $Server,
+        $Login = null, $Password = null)
+    {
 
-		if( $Protocol != 'tftp' ) {
-			if( !$this->SetCopyUserName( $Login ) ) {
-				// Destroy Config Copy Entry
-				$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-				return FALSE;
-			}
+        // Check Protocol
+        if (!array_key_exists($Protocol, $this->CopyProtocol)) {
+            $this->Error = 'not support protocol';
 
-			if( !$this->SetCopyUserPassword( $Password ) ) {
-				// Destroy Config Copy Entry
-				$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-				return FALSE;
-			}
-		}
+            return false;
+        }
 
-		//Do it
-		if( !$this->SetCopyEntryRowStatus( $this->RowStatus['active']) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+        //Create Copy Entry and Wait
+        if (!$this->SetCopyEntryRowStatus($this->RowStatus['createAndWait'])) {
+            return false;
+        }
 
-		if( !$this->CheckCopyStats() ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
-		
-		// Destroy Config Copy Entry
-		$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-		return TRUE;
-	}
+        // Set Source File Type Value to runningConfig
+        if (!$this->SetSourceFileType($this->ConfigFileType['runningConfig'])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-	public function Copy_StartupConfig_Network( $FileName, $Protocol, 
-		$Server, $Login = NULL, $Password = NULL )
-	{
+            return false;
+        }
 
-		// Check Protocol
-		if( !array_key_exists( $Protocol, $this->CopyProtocol ) ) {
-			$this->Error = "not support protocol";
-			return FALSE;
-		}
+        // Set Destination File Type Value to networkFile
+        if (!$this->SetDestFileType($this->ConfigFileType['networkFile'])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-		//Create Copy Entry and Wait
-		if( !$this->SetCopyEntryRowStatus( $this->RowStatus['createAndWait']) ) {
-			return FALSE;
-		}
+            return false;
+        }
 
-		// Set Source File Type Value to startupConfig
-		if( !$this->SetSourceFileType( $this->ConfigFileType['startupConfig'] ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+        // Set Copy Protocol
+        if (!$this->SetCopyProtocol($this->CopyProtocol[$Protocol])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-		// Set Destination File Type Value to networkFile
-		if( !$this->SetDestFileType( $this->ConfigFileType['networkFile'] ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+            return false;
+        }
 
-		// Set Copy Protocol
-		if( !$this->SetCopyProtocol( $this->CopyProtocol[$Protocol] ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
-		
-		// Set Server IP Address
-		if( !$this->SetCopyServerAddress( $Server ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+        // Set Server IP Address
+        if (!$this->SetCopyServerAddress($Server)) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-		// Set File Name
-		if( !$this->SetCopyFileName( $FileName ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+            return false;
+        }
 
-		if( $Protocol != 'tftp' ) {
-			if( !$this->SetCopyUserName( $Login ) ) {
-				// Destroy Config Copy Entry
-				$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-				return FALSE;
-			}
+        // Set Destination File Name
+        if (!$this->SetCopyFileName($FileName)) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-			if( !$this->SetCopyUserPassword( $Password ) ) {
-				// Destroy Config Copy Entry
-				$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-				return FALSE;
-			}
-		}
+            return false;
+        }
 
-		//Do it
-		if( !$this->SetCopyEntryRowStatus( $this->RowStatus['active']) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+        if ($Protocol != 'tftp') {
+            if (!$this->SetCopyUserName($Login)) {
+                // Destroy Config Copy Entry
+                $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-		if( !$this->CheckCopyStats() ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
-		
-		// Destroy Config Copy Entry
-		$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-		return TRUE;
-	}
+                return false;
+            }
 
-	public function Copy_Network_StartupConfig( $FileName, $Protocol, 
-		$Server, $Login = NULL, $Password = NULL )
-	{
+            if (!$this->SetCopyUserPassword($Password)) {
+                // Destroy Config Copy Entry
+                $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-		// Check Protocol
-		if( !array_key_exists( $Protocol, $this->CopyProtocol ) ) {
-			$this->Error = "not support protocol";
-			return FALSE;
-		}
+                return false;
+            }
+        }
 
-		//Create Copy Entry and Wait
+        //Do it
+        if (!$this->SetCopyEntryRowStatus($this->RowStatus['active'])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        if (!$this->CheckCopyStats()) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        // Destroy Config Copy Entry
+        $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+        return true;
+    }
+
+    public function Copy_StartupConfig_Network($FileName, $Protocol,
+        $Server, $Login = null, $Password = null)
+    {
+
+        // Check Protocol
+        if (!array_key_exists($Protocol, $this->CopyProtocol)) {
+            $this->Error = 'not support protocol';
+
+            return false;
+        }
+
+        //Create Copy Entry and Wait
+        if (!$this->SetCopyEntryRowStatus($this->RowStatus['createAndWait'])) {
+            return false;
+        }
+
+        // Set Source File Type Value to startupConfig
+        if (!$this->SetSourceFileType($this->ConfigFileType['startupConfig'])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        // Set Destination File Type Value to networkFile
+        if (!$this->SetDestFileType($this->ConfigFileType['networkFile'])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        // Set Copy Protocol
+        if (!$this->SetCopyProtocol($this->CopyProtocol[$Protocol])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        // Set Server IP Address
+        if (!$this->SetCopyServerAddress($Server)) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        // Set File Name
+        if (!$this->SetCopyFileName($FileName)) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        if ($Protocol != 'tftp') {
+            if (!$this->SetCopyUserName($Login)) {
+                // Destroy Config Copy Entry
+                $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+                return false;
+            }
+
+            if (!$this->SetCopyUserPassword($Password)) {
+                // Destroy Config Copy Entry
+                $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+                return false;
+            }
+        }
+
+        //Do it
+        if (!$this->SetCopyEntryRowStatus($this->RowStatus['active'])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        if (!$this->CheckCopyStats()) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        // Destroy Config Copy Entry
+        $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+        return true;
+    }
+
+    public function Copy_Network_StartupConfig($FileName, $Protocol,
+        $Server, $Login = null, $Password = null)
+    {
+
+        // Check Protocol
+        if (!array_key_exists($Protocol, $this->CopyProtocol)) {
+            $this->Error = 'not support protocol';
+
+            return false;
+        }
+
+        //Create Copy Entry and Wait
 //		if( !$this->SetCopyEntryRowStatus( $this->RowStatus['createAndWait']) ) {
 //			return FALSE;
 //		}
 
-		// Set Copy Protocol
-		if( !$this->SetCopyProtocol( $this->CopyProtocol[$Protocol] ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
-		
-		// Set Source File Type Value to startupConfig
-		if( !$this->SetSourceFileType( $this->ConfigFileType['networkFile'] ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+        // Set Copy Protocol
+        if (!$this->SetCopyProtocol($this->CopyProtocol[$Protocol])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-		// Set Destination File Type Value to networkFile
-		if( !$this->SetDestFileType( $this->ConfigFileType['startupConfig'] ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+            return false;
+        }
 
-		// Set Server IP Address
-		if( !$this->SetCopyServerAddress( $Server ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+        // Set Source File Type Value to startupConfig
+        if (!$this->SetSourceFileType($this->ConfigFileType['networkFile'])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-		// Set Source File Name
-		if( !$this->SetCopyFileName( $FileName ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+            return false;
+        }
 
-		if( $Protocol != 'tftp' ) {
-			if( !$this->SetCopyUserName( $Login ) ) {
-				// Destroy Config Copy Entry
-				$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-				return FALSE;
-			}
+        // Set Destination File Type Value to networkFile
+        if (!$this->SetDestFileType($this->ConfigFileType['startupConfig'])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-			if( !$this->SetCopyUserPassword( $Password ) ) {
-				// Destroy Config Copy Entry
-				$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-				return FALSE;
-			}
-		}
+            return false;
+        }
 
-		//Do it
-		if( !$this->SetCopyEntryRowStatus( $this->RowStatus['active']) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+        // Set Server IP Address
+        if (!$this->SetCopyServerAddress($Server)) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-		if( !$this->CheckCopyStats() ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
-		
-		// Destroy Config Copy Entry
-		$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-		return TRUE;
-	}
+            return false;
+        }
 
-	public function Copy_RunningConfig_Network( $FileName, $Protocol, 
-		$Server, $Login = NULL, $Password = NULL )
-	{
-		// Check Protocol
-		if( !array_key_exists( $Protocol, $this->CopyProtocol ) ) {
-			$this->Error = "not support protocol";
-			return FALSE;
-		}
+        // Set Source File Name
+        if (!$this->SetCopyFileName($FileName)) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-		//Create Copy Entry and Wait
-		if( !$this->SetCopyEntryRowStatus( $this->RowStatus['createAndWait']) ) {
-			return FALSE;
-		}
+            return false;
+        }
 
-		// Set Copy Protocol
-		if( !$this->SetCopyProtocol( $this->CopyProtocol[$Protocol] ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
-		
-		// Set Source File Type Value to RunningConfig
-		if( !$this->SetSourceFileType( $this->ConfigFileType['runningConfig'] ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+        if ($Protocol != 'tftp') {
+            if (!$this->SetCopyUserName($Login)) {
+                // Destroy Config Copy Entry
+                $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-		// Set Destination File Type Value to networkFile
-		if( !$this->SetDestFileType( $this->ConfigFileType['networkFile'] ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+                return false;
+            }
 
-		// Set Server IP Address
-		if( !$this->SetCopyServerAddress( $Server ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+            if (!$this->SetCopyUserPassword($Password)) {
+                // Destroy Config Copy Entry
+                $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-		// Set Source File Name
-		if( !$this->SetCopyFileName( $FileName ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+                return false;
+            }
+        }
 
-		if( $Protocol != 'tftp' ) {
-			if( !$this->SetCopyUserName( $Login ) ) {
-				// Destroy Config Copy Entry
-				$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-				return FALSE;
-			}
+        //Do it
+        if (!$this->SetCopyEntryRowStatus($this->RowStatus['active'])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-			if( !$this->SetCopyUserPassword( $Password ) ) {
-				// Destroy Config Copy Entry
-				$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-				return FALSE;
-			}
-		}
+            return false;
+        }
 
-		//Do it
-		if( !$this->SetCopyEntryRowStatus( $this->RowStatus['active']) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+        if (!$this->CheckCopyStats()) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-		if( !$this->CheckCopyStats() ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
-		
-		// Destroy Config Copy Entry
-		$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-		return TRUE;
+            return false;
+        }
 
-	}
+        // Destroy Config Copy Entry
+        $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-	public function Copy_Network_RunningConfig( $FileName, $Protocol,
-		$Server, $Login = NULL, $Password = NULL )
-	{
-	
-		// Check Protocol
-		if( !array_key_exists( $Protocol, $this->CopyProtocol ) ) {
-			$this->Error = "not support protocol";
-			return FALSE;
-		}
+        return true;
+    }
 
-		//Create Copy Entry and Wait
-		if( !$this->SetCopyEntryRowStatus( $this->RowStatus['createAndWait']) ) {
-			return FALSE;
-		}
+    public function Copy_RunningConfig_Network($FileName, $Protocol,
+        $Server, $Login = null, $Password = null)
+    {
+        // Check Protocol
+        if (!array_key_exists($Protocol, $this->CopyProtocol)) {
+            $this->Error = 'not support protocol';
 
-		// Set Copy Protocol
-		if( !$this->SetCopyProtocol( $this->CopyProtocol[$Protocol] ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
-		
-		// Set Source File Type Value to networkFile
-		if( !$this->SetSourceFileType( $this->ConfigFileType['networkFile'] ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+            return false;
+        }
 
-		// Set Destination File Type Value to runningConfig
-		if( !$this->SetDestFileType( $this->ConfigFileType['runningConfig'] ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+        //Create Copy Entry and Wait
+        if (!$this->SetCopyEntryRowStatus($this->RowStatus['createAndWait'])) {
+            return false;
+        }
 
-		// Set Server IP Address
-		if( !$this->SetCopyServerAddress( $Server ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+        // Set Copy Protocol
+        if (!$this->SetCopyProtocol($this->CopyProtocol[$Protocol])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-		// Set Source File Name
-		if( !$this->SetCopyFileName( $FileName ) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+            return false;
+        }
 
-		if( $Protocol != 'tftp' ) {
-			if( !$this->SetCopyUserName( $Login ) ) {
-				// Destroy Config Copy Entry
-				$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-				return FALSE;
-			}
+        // Set Source File Type Value to RunningConfig
+        if (!$this->SetSourceFileType($this->ConfigFileType['runningConfig'])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-			if( !$this->SetCopyUserPassword( $Password ) ) {
-				// Destroy Config Copy Entry
-				$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-				return FALSE;
-			}
-		}
+            return false;
+        }
 
-		//Do it
-		if( !$this->SetCopyEntryRowStatus( $this->RowStatus['active']) ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
+        // Set Destination File Type Value to networkFile
+        if (!$this->SetDestFileType($this->ConfigFileType['networkFile'])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
 
-		if( !$this->CheckCopyStats() ) {
-			// Destroy Config Copy Entry
-			$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-			return FALSE;
-		}
-		
-		// Destroy Config Copy Entry
-		$this->SetCopyEntryRowStatus( $this->RowStatus['destroy'] );
-		return TRUE;
-	}
+            return false;
+        }
 
+        // Set Server IP Address
+        if (!$this->SetCopyServerAddress($Server)) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        // Set Source File Name
+        if (!$this->SetCopyFileName($FileName)) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        if ($Protocol != 'tftp') {
+            if (!$this->SetCopyUserName($Login)) {
+                // Destroy Config Copy Entry
+                $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+                return false;
+            }
+
+            if (!$this->SetCopyUserPassword($Password)) {
+                // Destroy Config Copy Entry
+                $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+                return false;
+            }
+        }
+
+        //Do it
+        if (!$this->SetCopyEntryRowStatus($this->RowStatus['active'])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        if (!$this->CheckCopyStats()) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        // Destroy Config Copy Entry
+        $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+        return true;
+    }
+
+    public function Copy_Network_RunningConfig($FileName, $Protocol,
+        $Server, $Login = null, $Password = null)
+    {
+
+        // Check Protocol
+        if (!array_key_exists($Protocol, $this->CopyProtocol)) {
+            $this->Error = 'not support protocol';
+
+            return false;
+        }
+
+        //Create Copy Entry and Wait
+        if (!$this->SetCopyEntryRowStatus($this->RowStatus['createAndWait'])) {
+            return false;
+        }
+
+        // Set Copy Protocol
+        if (!$this->SetCopyProtocol($this->CopyProtocol[$Protocol])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        // Set Source File Type Value to networkFile
+        if (!$this->SetSourceFileType($this->ConfigFileType['networkFile'])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        // Set Destination File Type Value to runningConfig
+        if (!$this->SetDestFileType($this->ConfigFileType['runningConfig'])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        // Set Server IP Address
+        if (!$this->SetCopyServerAddress($Server)) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        // Set Source File Name
+        if (!$this->SetCopyFileName($FileName)) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        if ($Protocol != 'tftp') {
+            if (!$this->SetCopyUserName($Login)) {
+                // Destroy Config Copy Entry
+                $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+                return false;
+            }
+
+            if (!$this->SetCopyUserPassword($Password)) {
+                // Destroy Config Copy Entry
+                $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+                return false;
+            }
+        }
+
+        //Do it
+        if (!$this->SetCopyEntryRowStatus($this->RowStatus['active'])) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        if (!$this->CheckCopyStats()) {
+            // Destroy Config Copy Entry
+            $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+            return false;
+        }
+
+        // Destroy Config Copy Entry
+        $this->SetCopyEntryRowStatus($this->RowStatus['destroy']);
+
+        return true;
+    }
 }
