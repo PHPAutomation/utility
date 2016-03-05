@@ -28,74 +28,75 @@
  */
 namespace metaclassing;
 
-define("DEBUG_SUMMARY"	,0);  // Print summary debug text
-define("DEBUG_TEXT"		,1);  // Print text inline
-define("DEBUG_COMMENT"	,2);  // Print html <!-- comments -->
-define("DEBUG_HTML"		,3);  // Print html formatted
-define("DEBUG_DATABASE"	,4);  // Log messages to database table
-define("DEBUG_EMAIL"	,5);  // Log messages to email address
+define('DEBUG_SUMMARY', 0);  // Print summary debug text
+define('DEBUG_TEXT', 1);  // Print text inline
+define('DEBUG_COMMENT', 2);  // Print html <!-- comments -->
+define('DEBUG_HTML', 3);  // Print html formatted
+define('DEBUG_DATABASE', 4);  // Log messages to database table
+define('DEBUG_EMAIL', 5);  // Log messages to email address
 
 class Debug
 {
-	public $format;
-	public $messages;
+    public $format;
+    public $messages;
 
-	public function __construct($FORMAT = DEBUG_SUMMARY)
-	{
-		$this->format = $FORMAT;
-		$this->messages = array();
-	}
+    public function __construct($FORMAT = DEBUG_SUMMARY)
+    {
+        $this->format = $FORMAT;
+        $this->messages = [];
+    }
 
-	public function message($MESSAGE,$LEVEL = 1)
-	{
-		if ( isset($_SESSION["DEBUG"]) ) { $BASELEVEL = 0; }else{ $BASELEVEL = intval($_SESSION["DEBUG"]); }
-		if ($LEVEL <= $BASELEVEL)
-		{
-			if ($this->format == DEBUG_SUMMARY)
-			{
-				array_push($this->messages, $MESSAGE);
-			}
-			if ($this->format == DEBUG_TEXT)
-			{
-				array_push($this->messages, $MESSAGE);
-				print "$MESSAGE\n";
-			}
-			if ($this->format == DEBUG_COMMENT)
-			{
-				array_push($this->messages, $MESSAGE);
-				print "<!-- $MESSAGE -->\n";
-			}
-			if ($this->format == DEBUG_HTML)
-			{
-				array_push($this->messages, $MESSAGE);
-				print "<pre>$MESSAGE</pre>\n";
-			}
-			if ($this->format == DEBUG_DATABASE)
-			{
-				global $DB;
-				$DB->log($MESSAGE,$LEVEL);
-			}
-			if ($this->format == DEBUG_EMAIL)
-			{
-				global $DB;
-				$DB->log($MESSAGE,$LEVEL);
-				$LOGTO   = EMAIL_TO;
-				$LOGFROM = EMAIL_FROM;
-				$LOGHEADER = "From: NetworkTool <{$LOGFROM}>\r\nMIME-Version: 1.0\r\nContent-Type: text/html; charset=ISO-8859-1\r\nX-Mailer: php";
-				$LOGSUB  = "Tool Log Debug({$LEVEL})";
-				if ( isset($_SESSION["AAA"]["realname"]) ) { $REALNAME = $_SESSION["AAA"]["realname"]; }else{ $REALNAME = "Unidentified"; }
-				$LOCATION = basename($_SERVER["SCRIPT_FILENAME"]);
-				$LOGBODY = "User: $USERNAME ($REALNAME)<br>\nTool: $LOCATION<br>\nMessage:<br>\n$MESSAGE<br>\n";
-				if ($DETAILS) { $LOGBODY .= "Details:<br>\n$DETAILS<br>\n";}
-				mail($LOGTO, $LOGSUB, $LOGBODY, $LOGHEADER);
-			}
-		}
-	}
+    public function message($MESSAGE, $LEVEL = 1)
+    {
+        if (isset($_SESSION['DEBUG'])) {
+            $BASELEVEL = 0;
+        } else {
+            $BASELEVEL = intval($_SESSION['DEBUG']);
+        }
+        if ($LEVEL <= $BASELEVEL) {
+            if ($this->format == DEBUG_SUMMARY) {
+                array_push($this->messages, $MESSAGE);
+            }
+            if ($this->format == DEBUG_TEXT) {
+                array_push($this->messages, $MESSAGE);
+                echo "$MESSAGE\n";
+            }
+            if ($this->format == DEBUG_COMMENT) {
+                array_push($this->messages, $MESSAGE);
+                echo "<!-- $MESSAGE -->\n";
+            }
+            if ($this->format == DEBUG_HTML) {
+                array_push($this->messages, $MESSAGE);
+                echo "<pre>$MESSAGE</pre>\n";
+            }
+            if ($this->format == DEBUG_DATABASE) {
+                global $DB;
+                $DB->log($MESSAGE, $LEVEL);
+            }
+            if ($this->format == DEBUG_EMAIL) {
+                global $DB;
+                $DB->log($MESSAGE, $LEVEL);
+                $LOGTO = EMAIL_TO;
+                $LOGFROM = EMAIL_FROM;
+                $LOGHEADER = "From: NetworkTool <{$LOGFROM}>\r\nMIME-Version: 1.0\r\nContent-Type: text/html; charset=ISO-8859-1\r\nX-Mailer: php";
+                $LOGSUB = "Tool Log Debug({$LEVEL})";
+                if (isset($_SESSION['AAA']['realname'])) {
+                    $REALNAME = $_SESSION['AAA']['realname'];
+                } else {
+                    $REALNAME = 'Unidentified';
+                }
+                $LOCATION = basename($_SERVER['SCRIPT_FILENAME']);
+                $LOGBODY = "User: $USERNAME ($REALNAME)<br>\nTool: $LOCATION<br>\nMessage:<br>\n$MESSAGE<br>\n";
+                if ($DETAILS) {
+                    $LOGBODY .= "Details:<br>\n$DETAILS<br>\n";
+                }
+                mail($LOGTO, $LOGSUB, $LOGBODY, $LOGHEADER);
+            }
+        }
+    }
 
-	public function format($FORMAT = DEBUG_SUMMARY)
-	{
-		$this->format = $FORMAT;
-	}
-
-
+    public function format($FORMAT = DEBUG_SUMMARY)
+    {
+        $this->format = $FORMAT;
+    }
 }
