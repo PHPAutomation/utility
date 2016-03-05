@@ -308,7 +308,7 @@ class Utility
                 $PARENT = &$PARENT[$KEY];
             }
         }
-        $RESULT = recursiveRemoveEmptyArray($RESULT);
+        $RESULT = \metaclassing\Utility::recursiveRemoveEmptyArray($RESULT);
 
         return $RESULT;
     }
@@ -487,53 +487,6 @@ class Utility
 		}else{
 			return $a;
 		}
-	}
-
-	public static function parseNestedListToArray($LIST, $INDENTATION = " ")
-	{
-	    $RESULT = array();
-	    $PATH = array();
-	    $LINES = explode("\n",$LIST);
-	    foreach ($LINES as $LINE)
-	    {
-	        if ($LINE == "") { continue; print "Skipped blank line\n"; } // Skip blank lines, they dont need to be in our structure
-	        $DEPTH  = strlen($LINE) - strlen(ltrim($LINE));
-	        $LINE   = trim($LINE);
-	        // truncate path if needed
-	        while ($DEPTH < sizeof($PATH))
-	        {
-	            array_pop($PATH);
-	        }
-	        // keep label (at depth)
-	        $PATH[$DEPTH] = $LINE;
-	        // traverse path and add label to result
-	        $PARENT =& $RESULT;
-	        foreach ($PATH as $DEPTH => $KEY)
-	        {
-	            if (!isset($PARENT[$KEY]))
-	            {
-	                $PARENT[$LINE] = array();
-	                break;
-	            }
-	            $PARENT =& $PARENT[$KEY];
-	        }
-	    }
-	    $RESULT = \metaclassing\Utility::recursiveRemoveEmptyArray($RESULT);
-//      ksort($RESULT); // Sort our keys in the array for comparison ease // Do we really need this?
-	    return $RESULT;
-	}
-
-	public static function recursiveRemoveEmptyArray($ARRAY)
-	{
-	    $RETURN = array();
-	    foreach($ARRAY as $KEY => $VALUE) {
-	        if (count($VALUE) == 0) {
-	            $RETURN[$KEY] = 1;
-	        }else{
-	            $RETURN[$KEY] = \metaclassing\Utility::recursiveRemoveEmptyArray($VALUE);
-	        }
-	    }
-	    return $RETURN;
 	}
 
     // Find if a character $NEEDLE is in a string $HAYSTACK defaulting to case sensitive!
