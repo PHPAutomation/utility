@@ -454,30 +454,30 @@ class Utility
     // check if an array is associative
     public static function isAssoc($var)
     {
-        return is_array($var) && array_diff_key($var,array_keys(array_keys($var)));
+        return is_array($var) && array_diff_key($var, array_keys(array_keys($var)));
     }
 
-	public static function flush()
-	{
-	    if (php_sapi_name() != "cli") { // DONT FLUSH THE FUCKING CLI!
-			//echo(str_repeat(' ',256));
-	        if (ob_get_length()) {
-	            @ob_flush();
-	            @flush();
-	            @ob_end_flush();
-	        }
-	        @ob_start();
-	    }
-	}
+    public static function flush()
+    {
+        if (php_sapi_name() != 'cli') { // DONT FLUSH THE FUCKING CLI!
+            //echo(str_repeat(' ',256));
+            if (ob_get_length()) {
+                @ob_flush();
+                @flush();
+                @ob_end_flush();
+            }
+            @ob_start();
+        }
+    }
 
-	public static function strip($a)
-	{
-		if ( get_magic_quotes_gpc() ) {
-			return stripslashes($a);
-		}else{
-			return $a;
-		}
-	}
+    public static function strip($a)
+    {
+        if (get_magic_quotes_gpc()) {
+            return stripslashes($a);
+        } else {
+            return $a;
+        }
+    }
 
     // Find if a character $NEEDLE is in a string $HAYSTACK defaulting to case sensitive!
     public static function inString($needle, $haystack, $insensitive = false)
@@ -485,26 +485,28 @@ class Utility
         if ($insensitive) {
             return false !== stristr($haystack, $needle);
         }
+
         return false !== strpos($haystack, $needle);
     }
 
-	public static function recursiveArrayDiffAssoc($array1, $array2)
-	{
-	    $difference=array();
-	    foreach($array1 as $key => $value) {
-	        if( is_array($value) ) {
-	            if( !isset($array2[$key]) || !is_array($array2[$key]) ) {
-	                $difference[$key] = $value;
-	            } else {
-	                $new_diff = \metaclassing\Utility::recursiveArrayDiffAssoc($value, $array2[$key]);
-	                if( !empty($new_diff) )
-	                    $difference[$key] = $new_diff;
-	            }
-	        } else if( !array_key_exists($key,$array2) || $array2[$key] !== $value ) {
-	            $difference[$key] = $value;
-	        }
-	    }
-	    return $difference;
-	}
+    public static function recursiveArrayDiffAssoc($array1, $array2)
+    {
+        $difference = [];
+        foreach ($array1 as $key => $value) {
+            if (is_array($value)) {
+                if (!isset($array2[$key]) || !is_array($array2[$key])) {
+                    $difference[$key] = $value;
+                } else {
+                    $new_diff = \metaclassing\Utility::recursiveArrayDiffAssoc($value, $array2[$key]);
+                    if (!empty($new_diff)) {
+                        $difference[$key] = $new_diff;
+                    }
+                }
+            } elseif (!array_key_exists($key, $array2) || $array2[$key] !== $value) {
+                $difference[$key] = $value;
+            }
+        }
 
+        return $difference;
+    }
 }
