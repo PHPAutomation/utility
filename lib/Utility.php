@@ -488,11 +488,6 @@ class Utility
         return false !== strpos($haystack, $needle);
     }
 
-	public static function pregGrepKeys($pattern, $input, $flags = 0)
-	{
-	    return array_intersect_key($input, array_flip(preg_grep($pattern, array_keys($input), $flags)));
-	}
-
 	public static function recursiveArrayDiffAssoc($array1, $array2)
 	{
 	    $difference=array();
