@@ -475,4 +475,113 @@ class Utility
         imagedestroy($IMAGE);                                                   // Clean up the image
         return $RETURN;
     }
+
+    // check if an array is associative
+    public static function isAssoc($var)
+    {
+        return is_array($var) && array_diff_key($var,array_keys(array_keys($var)));
+    }
+
+	public static function flush()
+	{
+	    if (php_sapi_name() != "cli") { // DONT FLUSH THE FUCKING CLI!
+			//echo(str_repeat(' ',256));
+	        if (ob_get_length()) {
+	            @ob_flush();
+	            @flush();
+	            @ob_end_flush();
+	        }
+	        @ob_start();
+	    }
+	}
+
+	public static function strip($a)
+	{
+		if ( get_magic_quotes_gpc() ) {
+			return stripslashes($a);
+		}else{
+			return $a;
+		}
+	}
+
+	public static function parseNestedListToArray($LIST, $INDENTATION = " ")
+	{
+	    $RESULT = array();
+	    $PATH = array();
+	    $LINES = explode("\n",$LIST);
+	    foreach ($LINES as $LINE)
+	    {
+	        if ($LINE == "") { continue; print "Skipped blank line\n"; } // Skip blank lines, they dont need to be in our structure
+	        $DEPTH  = strlen($LINE) - strlen(ltrim($LINE));
+	        $LINE   = trim($LINE);
+	        // truncate path if needed
+	        while ($DEPTH < sizeof($PATH))
+	        {
+	            array_pop($PATH);
+	        }
+	        // keep label (at depth)
+	        $PATH[$DEPTH] = $LINE;
+	        // traverse path and add label to result
+	        $PARENT =& $RESULT;
+	        foreach ($PATH as $DEPTH => $KEY)
+	        {
+	            if (!isset($PARENT[$KEY]))
+	            {
+	                $PARENT[$LINE] = array();
+	                break;
+	            }
+	            $PARENT =& $PARENT[$KEY];
+	        }
+	    }
+	    $RESULT = \metaclassing\Utility::recursiveRemoveEmptyArray($RESULT);
+//      ksort($RESULT); // Sort our keys in the array for comparison ease // Do we really need this?
+	    return $RESULT;
+	}
+
+	public static function recursiveRemoveEmptyArray($ARRAY)
+	{
+	    $RETURN = array();
+	    foreach($ARRAY as $KEY => $VALUE) {
+	        if (count($VALUE) == 0) {
+	            $RETURN[$KEY] = 1;
+	        }else{
+	            $RETURN[$KEY] = \metaclassing\Utility::recursiveRemoveEmptyArray($VALUE);
+	        }
+	    }
+	    return $RETURN;
+	}
+
+    // Find if a character $NEEDLE is in a string $HAYSTACK defaulting to case sensitive!
+    public static function inString($needle, $haystack, $insensitive = false)
+    {
+        if ($insensitive) {
+            return false !== stristr($haystack, $needle);
+        }
+        return false !== strpos($haystack, $needle);
+    }
+
+	public static function pregGrepKeys($pattern, $input, $flags = 0)
+	{
+	    return array_intersect_key($input, array_flip(preg_grep($pattern, array_keys($input), $flags)));
+	}
+
+	public static function recursiveArrayDiffAssoc($array1, $array2)
+	{
+	    $difference=array();
+	    foreach($array1 as $key => $value) {
+	        if( is_array($value) ) {
+	            if( !isset($array2[$key]) || !is_array($array2[$key]) ) {
+	                $difference[$key] = $value;
+	            } else {
+	                $new_diff = \metaclassing\Utility::recursiveArrayDiffAssoc($value, $array2[$key]);
+	                if( !empty($new_diff) )
+	                    $difference[$key] = $new_diff;
+	            }
+	        } else if( !array_key_exists($key,$array2) || $array2[$key] !== $value ) {
+	            $difference[$key] = $value;
+	        }
+	    }
+	    return $difference;
+	}
+
 }
