@@ -113,9 +113,13 @@ class Utility
     ********************/
     public static function dumper($var)
     {
-        echo "<pre>\n";
+        if (php_sapi_name() != 'cli') { // DONT PRE THE CLI!
+            echo "<pre>\n";
+        }
         print_r($var);
-        echo "</pre><br>\n";
+        if (php_sapi_name() != 'cli') { // DONT PRE THE CLI!
+            echo "</pre><br>\n";
+        }
     }
 
     public static function dumperToString($var)
@@ -459,7 +463,7 @@ class Utility
 
     public static function flush()
     {
-        if (php_sapi_name() != 'cli') { // DONT FLUSH THE FUCKING CLI!
+        if (php_sapi_name() != 'cli') { // DONT FLUSH THE CLI!
             //echo(str_repeat(' ',256));
             if (ob_get_length()) {
                 @ob_flush();
