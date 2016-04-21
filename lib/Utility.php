@@ -82,6 +82,21 @@ class Utility
         return $result;
     }
 
+	/*
+		Some stolen stackoverflow code to safely convert multidimensional complex arrays into UTF8 safe stuff to json_encode
+	*/
+	public static function encodeArrayUTF8($array)
+	{
+        foreach($array as $key => $value) {
+            if(is_array($value)) {
+                $array[$key] = \metaclassing\Utility::encodeArrayUTF8($value);
+            }else{
+                $array[$key] = mb_convert_encoding($value, 'Windows-1252', 'UTF-8');
+            }
+        }
+        return $array;
+    }
+
     /*
         quick and dirty function to create folders if they dont exist and set permissions
     */
