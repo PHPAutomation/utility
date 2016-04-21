@@ -82,18 +82,19 @@ class Utility
         return $result;
     }
 
-	/*
-		Some stolen stackoverflow code to safely convert multidimensional complex arrays into UTF8 safe stuff to json_encode
-	*/
-	public static function encodeArrayUTF8($array)
-	{
-        foreach($array as $key => $value) {
-            if(is_array($value)) {
+    /*
+        Some stolen stackoverflow code to safely convert multidimensional complex arrays into UTF8 safe stuff to json_encode
+    */
+    public static function encodeArrayUTF8($array)
+    {
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
                 $array[$key] = \metaclassing\Utility::encodeArrayUTF8($value);
-            }else{
+            } else {
                 $array[$key] = mb_convert_encoding($value, 'Windows-1252', 'UTF-8');
             }
         }
+
         return $array;
     }
 
@@ -529,59 +530,61 @@ class Utility
         return $difference;
     }
 
-	public static function recursiveArrayFindKeyValue($ARRAY,$SEARCH)
-	{
-	    if ( is_array($ARRAY) ) {
-	        foreach ($ARRAY as $KEY => $VALUE) {
-	            if ($SEARCH === $KEY) {
-	                return $VALUE;
-	            }
-	            if ( is_array($VALUE) ) {
-	                $FOUND = \metaclassing\Utility::recursiveArrayFindKeyValue($VALUE,$SEARCH);
-	                if ($FOUND) {
-						return $FOUND;
-					}
-	            }
-	        }
-	    }
-	    return 0;
-	}
+    public static function recursiveArrayFindKeyValue($ARRAY, $SEARCH)
+    {
+        if (is_array($ARRAY)) {
+            foreach ($ARRAY as $KEY => $VALUE) {
+                if ($SEARCH === $KEY) {
+                    return $VALUE;
+                }
+                if (is_array($VALUE)) {
+                    $FOUND = \metaclassing\Utility::recursiveArrayFindKeyValue($VALUE, $SEARCH);
+                    if ($FOUND) {
+                        return $FOUND;
+                    }
+                }
+            }
+        }
 
-	public static function recursiveArrayTypeValueSearch($ARRAY,$SEARCH)
-	{
-	    if ( is_array($ARRAY) ) {
-	        foreach ($ARRAY as $KEY => $VALUE) {
-	            if ($KEY === "type" && $VALUE === $SEARCH) {
-	                return $ARRAY["value"];
-	            }
-	            if ( is_array($VALUE) ) {
-	                $FOUND = \metaclassing\Utility::recursiveArrayTypeValueSearch($VALUE,$SEARCH);
-	                if ($FOUND) {
-						return $FOUND;
-					}
-	            }
-	        }
-	    }
-	    return 0;
-	}
+        return 0;
+    }
 
-	public static function isBinary($str)
-	{
-		return preg_match('~[^\x20-\x7E\t\r\n]~', $str) > 0;
-	}
+    public static function recursiveArrayTypeValueSearch($ARRAY, $SEARCH)
+    {
+        if (is_array($ARRAY)) {
+            foreach ($ARRAY as $KEY => $VALUE) {
+                if ($KEY === 'type' && $VALUE === $SEARCH) {
+                    return $ARRAY['value'];
+                }
+                if (is_array($VALUE)) {
+                    $FOUND = \metaclassing\Utility::recursiveArrayTypeValueSearch($VALUE, $SEARCH);
+                    if ($FOUND) {
+                        return $FOUND;
+                    }
+                }
+            }
+        }
 
-	public static function recursiveArrayBinaryValuesToBase64($arr)
-	{
-		if(is_array($arr)) {
-			foreach($arr as $key => $value) {
-				if(is_array($value)) {
-					$arr[$key] = \metaclassing\Utility::recursiveArrayBinaryValuesToBase64($value);
-				}elseif( \metaclassing\Utility::isBinary($value) ){
-					$arr[$key] = base64_encode($value);
-				}
-			}
-		}
-		return $arr;
-	}
+        return 0;
+    }
 
+    public static function isBinary($str)
+    {
+        return preg_match('~[^\x20-\x7E\t\r\n]~', $str) > 0;
+    }
+
+    public static function recursiveArrayBinaryValuesToBase64($arr)
+    {
+        if (is_array($arr)) {
+            foreach ($arr as $key => $value) {
+                if (is_array($value)) {
+                    $arr[$key] = \metaclassing\Utility::recursiveArrayBinaryValuesToBase64($value);
+                } elseif (\metaclassing\Utility::isBinary($value)) {
+                    $arr[$key] = base64_encode($value);
+                }
+            }
+        }
+
+        return $arr;
+    }
 }
