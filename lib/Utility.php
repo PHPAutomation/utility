@@ -576,10 +576,11 @@ class Utility
 			foreach($arr as $key => $value) {
 				if(is_array($value)) {
 					$arr[$key] = \metaclassing\Utility::recursiveArrayBinaryValuesToBase64($value);
-				}elseif(\metaclassing\Utility::isBinary($value){
+				}elseif( \metaclassing\Utility::isBinary($value) ){
 					$arr[$key] = base64_encode($value);
 				}
 			}
+		}
 		return $arr;
 	}
 
