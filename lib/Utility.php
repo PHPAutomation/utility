@@ -411,7 +411,7 @@ class Utility
     {
         //print "Running recursiveStripTags on "; dumper($INPUT); print "<br>\n"; john_flush();
 
-        if (Utility::is_assoc($INPUT)) {
+        if (self::is_assoc($INPUT)) {
             // If this is an associative array, parse it as key => value.
 
             foreach ($INPUT as $KEY => $VALUE) {
