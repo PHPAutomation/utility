@@ -58,7 +58,7 @@ class Cisco
         }
 
         $POSSIBLE = [];
-        if (!\metaclassing\Utility::is_assoc($CONFIG)) {
+        if (!Utility::is_assoc($CONFIG)) {
             foreach ($CONFIG as $LINE) {
                 $LINE = trim($LINE);
                 if (preg_match('/.*source-interface.* (\S+)/', $LINE, $REG)) {
@@ -69,7 +69,7 @@ class Cisco
                     }
                 }
             }
-        } elseif (\metaclassing\Utility::is_assoc($CONFIG)) {
+        } elseif (Utility::is_assoc($CONFIG)) {
             foreach ($CONFIG as $LINE => $VALUE) {
                 $LINE = trim($LINE);
                 if (preg_match('/.*source-interface (\S+)/', $LINE, $REG)) {

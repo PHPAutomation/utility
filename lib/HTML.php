@@ -273,7 +273,7 @@ class HTML
             }
         }
 
-        if (!$this->is_assoc($values)) {
+        if (!Utility::is_assoc($values)) {
             foreach ($values as $item) {
                 $options[$item] = $item;
             }
