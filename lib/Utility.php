@@ -45,13 +45,10 @@ class Utility
     }
 
     /*
-        decode json into an array and throw exceptions if there is a problem
+        Check the last JSON encode or decode error and throw exceptions if there is a problem
     */
-    public static function decodeJson($string)
+    public static function testJsonError()
     {
-        // decode json into an array
-        $result = json_decode($string, true);
-
         // handle possible json errors and throw exceptions
         switch (json_last_error()) {
             case JSON_ERROR_NONE:
@@ -78,7 +75,30 @@ class Utility
             default:
                 throw new \Exception('Unknown JSON error occured');
         }
+		return false;
+    }
 
+    /*
+        encode data into json and throw exceptions if there is a problem
+    */
+    public static function encodeJson($data)
+    {
+        // decode json into an array
+        $result = json_encode($data, true);
+        // handle possible json errors and throw exceptions
+		self::testJsonError();
+        return $result;
+    }
+
+    /*
+        decode json into an array and throw exceptions if there is a problem
+    */
+    public static function decodeJson($string)
+    {
+        // decode json into an array
+        $result = json_decode($string, true);
+        // handle possible json errors and throw exceptions
+		self::testJsonError();
         return $result;
     }
 
