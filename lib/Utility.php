@@ -75,7 +75,8 @@ class Utility
             default:
                 throw new \Exception('Unknown JSON error occured');
         }
-		return false;
+
+        return false;
     }
 
     /*
@@ -86,7 +87,8 @@ class Utility
         // decode json into an array
         $result = json_encode($data, true);
         // handle possible json errors and throw exceptions
-		self::testJsonError();
+        self::testJsonError();
+
         return $result;
     }
 
@@ -98,7 +100,8 @@ class Utility
         // decode json into an array
         $result = json_decode($string, true);
         // handle possible json errors and throw exceptions
-		self::testJsonError();
+        self::testJsonError();
+
         return $result;
     }
 
