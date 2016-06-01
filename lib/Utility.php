@@ -121,7 +121,9 @@ class Utility
 
     public static function getDirectoryFiles($directory)
     {
-        return array_filter(scandir($directory), function ($item) { return !is_dir('../pages/'.$item); });
+        return array_filter(scandir($directory), function ($item) {
+            return !is_dir('../pages/'.$item);
+        });
     }
 
     /********************
