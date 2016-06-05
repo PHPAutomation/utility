@@ -18,7 +18,8 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
-		"ospinto/dbug": "dev-master"
+		"ospinto/dbug": "dev-master",
+		"nategood/httpful": "^0.2.20"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0"
