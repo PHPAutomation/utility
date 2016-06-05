@@ -1,6 +1,6 @@
 <?php
 /**
- * lib/Debug.php
+ * lib/Debug.php.
  *
  * I confess I dont even remember what this was used for...
  * GREP to the rescue I guess... grep-man, away!!! or man grep i guess lol

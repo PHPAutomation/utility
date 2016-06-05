@@ -1,6 +1,6 @@
 <?php
 /**
- * lib/HTML.php
+ * lib/HTML.php.
  *
  * HTML utility class to parse and return HTML code based on templates.
  *

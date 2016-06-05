@@ -1,6 +1,6 @@
 <?php
 /**
- * lib/CiscoConfig.php
+ * lib/CiscoConfig.php.
  *
  * This is a cisco configuration download tool for SNMP manipulation.
  *
