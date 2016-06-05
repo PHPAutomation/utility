@@ -1,10 +1,10 @@
 <?php
 /**
- * lib/JS.php.
+ * lib/JS.php
  *
  * This is a wrapper class for jquery from Ryan with animation updates from John
  *
- * PHP version 5
+ * PHP version 7
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

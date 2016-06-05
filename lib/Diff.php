@@ -1,10 +1,10 @@
 <?php
 /**
- * lib/Debug.php.
+ * lib/Debug.php
  *
  * A class containing functions for computing diffs and formatting the output.
  *
- * PHP version 5
+ * PHP version 7
  *
  * @category  default
  *

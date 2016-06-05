@@ -1,10 +1,10 @@
 <?php
 /**
- * lib/ArubaActivate.php.
+ * lib/ArubaActivate.php
  *
  * This class is a wrapper for JSON queries and updates to the Aruba activate API
  *
- * PHP version 5
+ * PHP version 7
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

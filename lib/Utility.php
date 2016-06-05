@@ -1,11 +1,11 @@
 <?php
 /**
- * lib/Utility.php.
+ * lib/Utility.php
  *
  * This class contains a bunch of public static member functions with various uses
  * and have been collected from various sources over the years
  *
- * PHP version 5
+ * PHP version 7
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

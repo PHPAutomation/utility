@@ -1,10 +1,10 @@
 <?php
 /**
- * lib/HTML.php.
+ * lib/HTML.php
  *
  * HTML utility class to parse and return HTML code based on templates.
  *
- * PHP version 5
+ * PHP version 7
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

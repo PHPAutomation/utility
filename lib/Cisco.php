@@ -1,10 +1,10 @@
 <?php
 /**
- * lib/Cisco.php.
+ * lib/Cisco.php
  *
  * This is a bunch of helper functions used with Cisco equipment and output parsing
  *
- * PHP version 5
+ * PHP version 7
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

@@ -1,11 +1,11 @@
 <?php
 /**
- * lib/Debug.php.
+ * lib/Debug.php
  *
  * I confess I dont even remember what this was used for...
  * GREP to the rescue I guess... grep-man, away!!! or man grep i guess lol
  *
- * PHP version 5
+ * PHP version 7
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

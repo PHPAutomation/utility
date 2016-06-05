@@ -1,10 +1,10 @@
 <?php
 /**
- * lib/CiscoConfig.php.
+ * lib/CiscoConfig.php
  *
  * This is a cisco configuration download tool for SNMP manipulation.
  *
- * PHP version 5
+ * PHP version 7
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
