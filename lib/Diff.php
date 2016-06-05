@@ -1,6 +1,6 @@
 <?php
 /**
- * lib/Debug.php
+ * lib/Debug.php.
  *
  * A class containing functions for computing diffs and formatting the output.
  *

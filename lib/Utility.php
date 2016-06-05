@@ -1,6 +1,6 @@
 <?php
 /**
- * lib/Utility.php
+ * lib/Utility.php.
  *
  * This class contains a bunch of public static member functions with various uses
  * and have been collected from various sources over the years

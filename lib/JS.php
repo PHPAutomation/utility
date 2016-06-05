@@ -1,6 +1,6 @@
 <?php
 /**
- * lib/JS.php
+ * lib/JS.php.
  *
  * This is a wrapper class for jquery from Ryan with animation updates from John
  *

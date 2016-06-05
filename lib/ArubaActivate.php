@@ -1,6 +1,6 @@
 <?php
 /**
- * lib/ArubaActivate.php
+ * lib/ArubaActivate.php.
  *
  * This class is a wrapper for JSON queries and updates to the Aruba activate API
  *

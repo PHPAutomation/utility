@@ -1,6 +1,6 @@
 <?php
 /**
- * lib/Cisco.php
+ * lib/Cisco.php.
  *
  * This is a bunch of helper functions used with Cisco equipment and output parsing
  *
