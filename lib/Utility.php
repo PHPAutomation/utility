@@ -105,17 +105,18 @@ class Utility
         return $result;
     }
 
-	/*
-		This converts a big ugly long line of XML to something human readable
-	*/
-	function xmlPrettyPrint($xml)
-	{
-		$dom = new \DOMDocument;
-		$dom->preserveWhiteSpace = FALSE;
-		$dom->loadXML($xml);
-		$dom->formatOutput = TRUE;
-		return $dom->saveXml();
-	}
+    /*
+        This converts a big ugly long line of XML to something human readable
+    */
+    public function xmlPrettyPrint($xml)
+    {
+        $dom = new \DOMDocument();
+        $dom->preserveWhiteSpace = false;
+        $dom->loadXML($xml);
+        $dom->formatOutput = true;
+
+        return $dom->saveXml();
+    }
 
     /*
         Some stolen stackoverflow code to safely convert multidimensional complex arrays into UTF8 safe stuff to json_encode
