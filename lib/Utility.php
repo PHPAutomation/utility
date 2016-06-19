@@ -135,6 +135,21 @@ class Utility
     }
 
     /*
+        Some stolen php.net code to safely convert multidimensional complex arrays into UTF8 safe stuff to json_encode
+    */
+    public static function encodeArrayUTF($d)
+    {
+        if (is_array($d)) {
+            foreach ($d as $k => $v) {
+                $d[$k] = \metaclassing\Utility::encodeArrayUTF($v);
+            }
+        } else if (is_string ($d)) {
+            return utf8_encode($d);
+        }
+        return $d;
+    }
+
+    /*
         quick and dirty function to create folders if they dont exist and set permissions
     */
     public static function safeMakeDirectory($directory, $permissions = 0755)
