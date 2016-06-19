@@ -143,9 +143,10 @@ class Utility
             foreach ($d as $k => $v) {
                 $d[$k] = \metaclassing\Utility::encodeArrayUTF($v);
             }
-        } else if (is_string ($d)) {
+        } elseif (is_string($d)) {
             return utf8_encode($d);
         }
+
         return $d;
     }
 
