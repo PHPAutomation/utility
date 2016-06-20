@@ -230,7 +230,7 @@ class Utility
     {
         $regex = "/(\w+\.\w+)$/";
         if (preg_match($regex, $subdomain, $hits)) {
-                return $hits[1];
+            return $hits[1];
         }
         throw new \Excetion("Could not extract root domain out of subdomain {$subdomain}");
     }
