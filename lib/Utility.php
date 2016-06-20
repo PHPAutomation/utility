@@ -309,6 +309,11 @@ class Utility
         return true;
     }
 
+    public static function stringToArray($string)
+    {
+        return preg_split('/\s+/', $string);
+    }
+
     public static function assocRange($START, $END, $STEP = 1)
     {
         $RETURN = [];
