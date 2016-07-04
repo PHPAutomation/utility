@@ -232,7 +232,7 @@ class Utility
         if (preg_match($regex, $subdomain, $hits)) {
             return $hits[1];
         }
-        throw new \Excetion("Could not extract root domain out of subdomain {$subdomain}");
+        throw new \Exception("Could not extract root domain out of subdomain {$subdomain}");
     }
 
     public static function checkValidEmail($email)
