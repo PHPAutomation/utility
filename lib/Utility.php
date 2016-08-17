@@ -25,13 +25,13 @@
  * @copyright 2009-2016 @authors
  * @license   http://www.gnu.org/copyleft/lesser.html The GNU LESSER GENERAL PUBLIC LICENSE, Version 3.0
  */
-namespace metaclassing;
+namespace Metaclassing;
 
 class Utility
 {
     public function __construct()
     {
-        throw new \Exception("Do not create instances of this object, call public static member functions like \metaclassing\Utility::someDumbThing(params)");
+        throw new \Exception("Do not create instances of this object, call public static member functions like \Metaclassing\Utility::someDumbThing(params)");
     }
 
     /*
@@ -125,7 +125,7 @@ class Utility
     {
         foreach ($array as $key => $value) {
             if (is_array($value)) {
-                $array[$key] = \metaclassing\Utility::encodeArrayUTF8($value);
+                $array[$key] = \Metaclassing\Utility::encodeArrayUTF8($value);
             } else {
                 $array[$key] = mb_convert_encoding($value, 'Windows-1252', 'UTF-8');
             }
@@ -141,7 +141,7 @@ class Utility
     {
         if (is_array($d)) {
             foreach ($d as $k => $v) {
-                $d[$k] = \metaclassing\Utility::encodeArrayUTF($v);
+                $d[$k] = \Metaclassing\Utility::encodeArrayUTF($v);
             }
         } elseif (is_string($d)) {
             return utf8_encode($d);
@@ -195,7 +195,7 @@ class Utility
     public static function dumperToString($var)
     {
         ob_start();
-        \metaclassing\Utility::dumper($var);
+        \Metaclassing\Utility::dumper($var);
         $result = ob_get_clean();
 
         return $result;
@@ -396,7 +396,7 @@ class Utility
                 $PARENT = &$PARENT[$KEY];
             }
         }
-        $RESULT = \metaclassing\Utility::recursiveRemoveEmptyArray($RESULT);
+        $RESULT = \Metaclassing\Utility::recursiveRemoveEmptyArray($RESULT);
 
         return $RESULT;
     }
@@ -408,7 +408,7 @@ class Utility
             if (count($VALUE) == 0) {
                 $RETURN[$KEY] = 1;
             } else {
-                $RETURN[$KEY] = \metaclassing\Utility::recursiveRemoveEmptyArray($VALUE);
+                $RETURN[$KEY] = \Metaclassing\Utility::recursiveRemoveEmptyArray($VALUE);
             }
         }
 
@@ -425,7 +425,7 @@ class Utility
         $COMMAND = '/sbin/ifconfig';
         $IFCONFIG = shell_exec($COMMAND);
 
-        return \metaclassing\Utility::parseIfconfig($IFCONFIG);
+        return \Metaclassing\Utility::parseIfconfig($IFCONFIG);
     }
 
     public static function parseIfconfig($IFCONFIG)
@@ -483,13 +483,13 @@ class Utility
             // If this is an associative array, parse it as key => value.
 
             foreach ($INPUT as $KEY => $VALUE) {
-                $INPUT[$KEY] = \metaclassing\Utility::recursiveStripTags($VALUE, $ALLOWED_TAGS);
+                $INPUT[$KEY] = \Metaclassing\Utility::recursiveStripTags($VALUE, $ALLOWED_TAGS);
             }
         } elseif (is_array($INPUT)) {
             // If this is a normal array, parse it as $value.
 
             foreach ($INPUT as &$VALUE) {
-                $VALUE = \metaclassing\Utility::recursiveStripTags($VALUE, $ALLOWED_TAGS);
+                $VALUE = \Metaclassing\Utility::recursiveStripTags($VALUE, $ALLOWED_TAGS);
             }
         } elseif (is_string($INPUT)) {
             // If this is a string, run the global strip_tags function.
@@ -585,7 +585,7 @@ class Utility
                 if (!isset($array2[$key]) || !is_array($array2[$key])) {
                     $difference[$key] = $value;
                 } else {
-                    $new_diff = \metaclassing\Utility::recursiveArrayDiffAssoc($value, $array2[$key]);
+                    $new_diff = \Metaclassing\Utility::recursiveArrayDiffAssoc($value, $array2[$key]);
                     if (!empty($new_diff)) {
                         $difference[$key] = $new_diff;
                     }
@@ -606,7 +606,7 @@ class Utility
                     return $VALUE;
                 }
                 if (is_array($VALUE)) {
-                    $FOUND = \metaclassing\Utility::recursiveArrayFindKeyValue($VALUE, $SEARCH);
+                    $FOUND = \Metaclassing\Utility::recursiveArrayFindKeyValue($VALUE, $SEARCH);
                     if ($FOUND) {
                         return $FOUND;
                     }
@@ -625,7 +625,7 @@ class Utility
                     return $ARRAY['value'];
                 }
                 if (is_array($VALUE)) {
-                    $FOUND = \metaclassing\Utility::recursiveArrayTypeValueSearch($VALUE, $SEARCH);
+                    $FOUND = \Metaclassing\Utility::recursiveArrayTypeValueSearch($VALUE, $SEARCH);
                     if ($FOUND) {
                         return $FOUND;
                     }
@@ -646,8 +646,8 @@ class Utility
         if (is_array($arr)) {
             foreach ($arr as $key => $value) {
                 if (is_array($value)) {
-                    $arr[$key] = \metaclassing\Utility::recursiveArrayBinaryValuesToBase64($value);
-                } elseif (\metaclassing\Utility::isBinary($value)) {
+                    $arr[$key] = \Metaclassing\Utility::recursiveArrayBinaryValuesToBase64($value);
+                } elseif (\Metaclassing\Utility::isBinary($value)) {
                     $arr[$key] = base64_encode($value);
                 }
             }

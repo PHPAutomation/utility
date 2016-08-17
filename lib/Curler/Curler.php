@@ -1,6 +1,6 @@
 <?php
 
-namespace metaclassing\Curler;
+namespace Metaclassing\Curler;
 
 class Curler
 {

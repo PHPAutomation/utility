@@ -24,7 +24,7 @@
  * @copyright 2015-2016 @authors
  * @license   http://www.gnu.org/copyleft/lesser.html The GNU LESSER GENERAL PUBLIC LICENSE, Version 3.0
  */
-namespace metaclassing;
+namespace Metaclassing;
 
 class VerisignDNSClient
 {
@@ -94,17 +94,17 @@ END;
     {
         // deep black magic
         $response = $this->soap->$action($parameters);
-        $response = \metaclassing\Utility::encodeJson($response);
-        $response = \metaclassing\Utility::decodeJson($response);
+        $response = \Metaclassing\Utility::encodeJson($response);
+        $response = \Metaclassing\Utility::decodeJson($response);
         $this->log[] = [
                         'request' => [
                                     'action'     => $action,
                                     'parameters' => $parameters,
-                                    //'xml' => \metaclassing\Utility::xmlPrettyPrint($this->soap->__getLastRequest()),
+                                    //'xml' => \Metaclassing\Utility::xmlPrettyPrint($this->soap->__getLastRequest()),
                                     ],
                         'response' => [
                                     'response' => $response,
-                                    //'xml' => \metaclassing\Utility::xmlPrettyPrint( $this->soap->__getLastResponse() ),
+                                    //'xml' => \Metaclassing\Utility::xmlPrettyPrint( $this->soap->__getLastResponse() ),
                                     ],
                         ];
 

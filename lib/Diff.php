@@ -12,7 +12,7 @@
  * @copyright 2009-2016 @authors
  * @license   http://creativecommons.org/publicdomain/zero/1.0/legalcode CC0 1.0
  */
-namespace metaclassing;
+namespace Metaclassing;
 
 class Diff
 {

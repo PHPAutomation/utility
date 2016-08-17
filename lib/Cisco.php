@@ -25,7 +25,7 @@
  * @copyright 2009-2016 @authors
  * @license   http://www.gnu.org/copyleft/lesser.html The GNU LESSER GENERAL PUBLIC LICENSE, Version 3.0
  */
-namespace metaclassing;
+namespace Metaclassing;
 
 class Cisco
 {
@@ -245,7 +245,7 @@ class Cisco
     public static function parseNestedListToArray($CONFIG)
     {
         $RETURN = [];
-        $RETURN = \metaclassing\Cisco::filterConfig($CONFIG);                 // Filter our config to strip out unimportant bits
+        $RETURN = \Metaclassing\Cisco::filterConfig($CONFIG);                 // Filter our config to strip out unimportant bits
         $RETURN = parse_nested_list_to_array($RETURN);          // Parse the filtered config to an array
         return $RETURN;                                         // And return it
     }

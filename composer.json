@@ -1,5 +1,5 @@
 {
-    "name": "metaclassing/utility",
+    "name": "Metaclassing/Utility",
     "type": "library",
     "description": "PHP Utility Library",
     "keywords": [
@@ -26,7 +26,7 @@
     },
     "autoload": {
         "psr-4": {
-            "metaclassing\\": "lib"
+            "Metaclassing\\": "lib"
         }
     }
 }

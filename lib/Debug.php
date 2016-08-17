@@ -26,7 +26,7 @@
  * @copyright 2009-2016 @authors
  * @license   http://www.gnu.org/copyleft/lesser.html The GNU LESSER GENERAL PUBLIC LICENSE, Version 3.0
  */
-namespace metaclassing;
+namespace Metaclassing;
 
 define('DEBUG_SUMMARY', 0);  // Print summary debug text
 define('DEBUG_TEXT', 1);  // Print text inline

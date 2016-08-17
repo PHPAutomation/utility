@@ -1,6 +1,6 @@
 <?php
 
-namespace metaclassing\Curler;
+namespace Metaclassing\Curler;
 
 class Certbot extends Curler
 {
@@ -34,14 +34,14 @@ class Certbot extends Curler
         curl_setopt($this->curl, CURLOPT_REFERER, $referer);
 
         $response = $this->curl_exec();
-        if (!\metaclassing\Utility::isJson($response)) {
+        if (!\Metaclassing\Utility::isJson($response)) {
             throw new \Exception('Did not get JSON response from web service, got '.$response);
         }
 
-        $response = \metaclassing\Utility::decodeJson($response);
+        $response = \Metaclassing\Utility::decodeJson($response);
         if (isset($response['status_code']) && $response['status_code'] != 200) {
             throw new \Exception('Did not get a 200 response from web service for last call,'.
-                                 ' url was '.$url.' response was '.\metaclassing\Utility::dumperToString($response));
+                                 ' url was '.$url.' response was '.\Metaclassing\Utility::dumperToString($response));
         }
 
         return $response;

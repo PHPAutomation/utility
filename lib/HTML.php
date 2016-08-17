@@ -25,7 +25,7 @@
  * @copyright 2009-2016 @authors
  * @license   http://www.gnu.org/copyleft/lesser.html The GNU LESSER GENERAL PUBLIC LICENSE, Version 3.0
  */
-namespace metaclassing;
+namespace Metaclassing;
 
 class HTML
 {
@@ -218,7 +218,7 @@ class HTML
         $this->set('QUERYCOUNT', $QUERYCOUNT + intval(count($DB->QUERIES)));
         $this->set('RECORDCOUNT', intval($DB->RECORDCOUNT));
         if (isset($_SESSION['DEBUG']) && $_SESSION['DEBUG'] > 5) {
-            $this->set('FOOTERDEBUG', \metaclassing\Utility::dumper($DB));
+            $this->set('FOOTERDEBUG', \Metaclassing\Utility::dumper($DB));
         }
 
         return $this->parse(INCLUDEDIR.'/footer.template.html');

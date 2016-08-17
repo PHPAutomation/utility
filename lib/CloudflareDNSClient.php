@@ -24,7 +24,7 @@
  * @copyright 2015-2016 @authors
  * @license   http://www.gnu.org/copyleft/lesser.html The GNU LESSER GENERAL PUBLIC LICENSE, Version 3.0
  */
-namespace metaclassing;
+namespace Metaclassing;
 
 class CloudflareDNSClient
 {
@@ -79,13 +79,13 @@ class CloudflareDNSClient
                                                     ->addHeader('X-Auth-Key', $this->apikey)
                                                     ->expectsType(\Httpful\Mime::JSON)
                                                     ->parseWith(function ($body) {
-                                                        return \metaclassing\Utility::decodeJson($body);
+                                                        return \Metaclassing\Utility::decodeJson($body);
                                                     })
                                                     ->send()
                                                     ->body;
             $this->log[count($this->log) - 1]['response'] = $response;
             if ($response['success'] != true) {
-                throw new \Exception("get {$uri} unsuccessful".\metaclassing\Utility::encodeJson($response));
+                throw new \Exception("get {$uri} unsuccessful".\Metaclassing\Utility::encodeJson($response));
             }
             foreach ($response['result'] as $result) {
                 array_push($results, $result);
@@ -114,7 +114,7 @@ class CloudflareDNSClient
                                                 ->addHeader('X-Auth-Key', $this->apikey)
                                                 ->sendsAndExpects(\Httpful\Mime::JSON)
                                                 ->parseWith(function ($body) {
-                                                    return \metaclassing\Utility::decodeJson($body);
+                                                    return \Metaclassing\Utility::decodeJson($body);
                                                 })
                                                 ->body($body)
                                                 ->send()
@@ -141,7 +141,7 @@ class CloudflareDNSClient
                                                 ->addHeader('X-Auth-Key', $this->apikey)
                                                 ->expects(\Httpful\Mime::JSON)
                                                 ->parseWith(function ($body) {
-                                                    return \metaclassing\Utility::decodeJson($body);
+                                                    return \Metaclassing\Utility::decodeJson($body);
                                                 })
                                                 ->send()
                                                 ->body;
