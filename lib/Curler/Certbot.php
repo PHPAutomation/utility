@@ -76,7 +76,7 @@ class Certbot extends Curler
     {
         foreach ($this->accounts as $type => $accounts) {
             foreach ($accounts as $index => $account) {
-                $url = $this->baseurl.$type.'/account/'.$account['id'].'/certificate';
+                $url = $this->baseurl.$type.'/accounts/'.$account['id'].'/certificates';
                 $response = $this->getjson($url);
                 $certificates = $response['certificates'];
                 foreach ($certificates as $certificate) {
@@ -96,7 +96,7 @@ class Certbot extends Curler
                 foreach ($account['certificates'] as $certificate) {
                     if ($certificate['name'] == $name) {
                         $certificate['accounttype'] = $type;
-                        $certificate['pemurl'] = $this->baseurl.$type.'/account/'.$certificate['account_id'].'/certificate/'.$certificate['id'].'/pem';
+                        $certificate['pemurl'] = $this->baseurl.$type.'/accounts/'.$certificate['account_id'].'/certificates/'.$certificate['id'].'/pem';
 
                         return $certificate;
                     }
