@@ -35,7 +35,7 @@ class Certbot extends Curler
 
         $response = $this->curl_exec();
         if (!\Metaclassing\Utility::isJson($response)) {
-            throw new \Exception('Did not get JSON response from web service, got '.$response);
+            throw new \Exception('Did not get JSON response from web service url '.$url.', got '.$response);
         }
 
         $response = \Metaclassing\Utility::decodeJson($response);
