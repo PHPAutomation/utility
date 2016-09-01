@@ -50,7 +50,7 @@ class Certbot extends Curler
     public function authenticate()
     {
         // get our json web token for authentication
-        $url = $this->baseurl.'authenticate';
+        $url = $this->baseurl.'/authenticate';
         $result = $this->getjson($url);
         if (!$result['token']) {
             throw new \Exception('Could not authenticate to web service and get JSON web token');
@@ -61,7 +61,7 @@ class Certbot extends Curler
     public function listAccounts()
     {
         foreach ($this->accounttypes as $type) {
-            $url = $this->baseurl.$type.'/account';
+            $url = $this->baseurl.'/'.$type.'/accounts';
             $response = $this->getjson($url);
             $accounts = $response['accounts'];
             foreach ($accounts as $account) {
@@ -76,7 +76,7 @@ class Certbot extends Curler
     {
         foreach ($this->accounts as $type => $accounts) {
             foreach ($accounts as $index => $account) {
-                $url = $this->baseurl.$type.'/accounts/'.$account['id'].'/certificates';
+                $url = $this->baseurl.'/'.$type.'/accounts/'.$account['id'].'/certificates';
                 $response = $this->getjson($url);
                 $certificates = $response['certificates'];
                 foreach ($certificates as $certificate) {
@@ -96,7 +96,7 @@ class Certbot extends Curler
                 foreach ($account['certificates'] as $certificate) {
                     if ($certificate['name'] == $name) {
                         $certificate['accounttype'] = $type;
-                        $certificate['pemurl'] = $this->baseurl.$type.'/accounts/'.$certificate['account_id'].'/certificates/'.$certificate['id'].'/pem';
+                        $certificate['pemurl'] = $this->baseurl.'/'.$type.'/accounts/'.$certificate['account_id'].'/certificates/'.$certificate['id'].'/pem';
 
                         return $certificate;
                     }
