@@ -93,6 +93,10 @@ class Certbot extends Curler
     {
         foreach ($this->accounttypes as $type) {
             foreach ($this->accounts[$type] as $account) {
+                // Skip empty accounts with no visible certificates
+                if (!isset($account['certificates'])) {
+                   continue;
+                }
                 foreach ($account['certificates'] as $certificate) {
                     if ($certificate['name'] == $name) {
                         $certificate['accounttype'] = $type;
