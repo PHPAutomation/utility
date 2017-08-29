@@ -228,7 +228,7 @@ class Utility
 
     public static function subdomainToDomain($subdomain)
     {
-        $regex = "/(\w+\.\w+)$/";
+        $regex = "/([a-zA-Z0-9-]+\.[a-zA-Z0-9-]+)$/";
         if (preg_match($regex, $subdomain, $hits)) {
             return $hits[1];
         }
