@@ -191,12 +191,12 @@ END;
     }
 
     // User facing function to return possibly cached records for a zone by name
-    public function getRecords($zone)
+    public function getRecords($zone, $force = false)
     {
         if (!isset($this->zones[$zone])) {
             throw new \Exception("Unknown zone {$zone} requested, did you call getZones() first?");
         }
-        if (!isset($this->zonerecords[$zone])) {
+        if (!isset($this->zonerecords[$zone]) || $force) {
             $this->zonerecords[$zone] = $this->fetchRecords($zone);
         }
 
