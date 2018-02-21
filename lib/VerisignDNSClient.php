@@ -93,7 +93,10 @@ END;
     protected function soapCall($action, $parameters = null)
     {
         // deep black magic
+        $stfu = error_reporting();
+        error_reporting(0);
         $response = $this->soap->$action($parameters);
+        error_reporting($stfu);
         $response = \Metaclassing\Utility::encodeJson($response);
         $response = \Metaclassing\Utility::decodeJson($response);
         $this->log[] = [
