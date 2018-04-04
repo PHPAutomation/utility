@@ -55,7 +55,7 @@ class VerisignDNSClient2
         $this->username = $username;
         $this->password = $password;
         // Try to get our list of domains automatically
-        //$this->getZones();
+        $this->getZones();
     }
 
     // Return our log messages of requests and responses for debugging
@@ -183,6 +183,10 @@ class VerisignDNSClient2
         // Make sure we know what zone to target
         if (!isset($this->zones[$zone])) {
             throw new \Exception("unknown zone {$zone} did you call getZones()?");
+        }
+        // VERISCUMs new api is REALLY DUMB about name.zone.tld with a missing DOT at the end.
+        if(substr($name, -1) != '.') {
+            $name = $name . '.';
         }
         // build our postable body
         $request = [
