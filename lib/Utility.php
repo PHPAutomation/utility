@@ -204,7 +204,7 @@ class Utility
     public static function dBugToString($debug)
     {
         ob_start();
-        new \dBug($debug);
+        new \Ospinto\dBug($debug);
         $result = ob_get_clean();
 
         return $result;
