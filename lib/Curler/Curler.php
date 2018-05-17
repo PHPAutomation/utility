@@ -31,6 +31,7 @@ class Curler
 
     public function get($url, $referer = '')
     {
+        curl_setopt($this->curl, CURLOPT_POST, false);
         curl_setopt($this->curl, CURLOPT_URL, $url);
         curl_setopt($this->curl, CURLOPT_REFERER, $referer);
 
