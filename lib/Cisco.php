@@ -173,7 +173,7 @@ class Cisco
         $invlines = explode("\r\n", $show_inventory);
         foreach ($invlines as $line) {
             // LEGACY PERL CODE: $x =~ /^\s*PID:\s(\S+).*SN:\s+(\S+)\s*$/;
-            if (preg_match('/.*PID:\s(\S+)\s.*/', $line, $reg)) {
+            if (preg_match('/.*PID:\s(\S+?)(,|\s).*/', $line, $reg)) {
                 $model = $reg[1];
 
                 return $model;
