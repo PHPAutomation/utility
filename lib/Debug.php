@@ -21,8 +21,6 @@
  *
  * @category  default
  *
- * @author    Ryan Honeyman
- * @author    John Lavoie
  * @copyright 2009-2016 @authors
  * @license   http://www.gnu.org/copyleft/lesser.html The GNU LESSER GENERAL PUBLIC LICENSE, Version 3.0
  */
